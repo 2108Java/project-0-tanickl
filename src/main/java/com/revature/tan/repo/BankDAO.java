@@ -2,6 +2,7 @@ package com.revature.tan.repo;
 
 public interface BankDAO {
 
+	
 	public void applyForNewAcct();
 		//or should I use boolean to check if successful?
 	
@@ -31,34 +32,6 @@ public interface BankDAO {
 	
 //end of interface
 }	
-///*
-// * 
-// * must be able to:
-//	
-//	apply for account
-//	
-//	login as customer
-//	
-//	login as employee
-//	
-//	view accounts
-//	
-//	customer-deposit
-//	
-//	customer-withdraw
-//	
-//	customer-close
-//	
-//	customer-joint
-//	
-//	employee approve pending acct
-//	
-//	employee view transactions
-//	
 //
-// * 
-// *
-// * 
-// */
 
 	

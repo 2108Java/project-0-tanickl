@@ -11,14 +11,12 @@ import java.util.Properties;
 
 public class BankDAOImpl implements BankDAO {
 
+		//consider changing to AWS
 	String url = "jdbc:postgresql://localhost/5432/postgres";
 	String username = "postgres";
-	String password = "farm4$CROPS123";
+	String password = "passWORD";
 	
 	
-
-
-			
 	 		
 		@Override
 		public boolean applyForNewAcct() {
@@ -39,11 +37,11 @@ public class BankDAOImpl implements BankDAO {
 
 		
 		
-		
+		//This method will query the DAO to test whether user&pass match and return loggedIn as true
 		@Override
 		public boolean checkUserLogin() {
-			final boolean loggedIn = false;
-			private boolean match = false;
+			boolean loggedIn = false;
+			
 			try (Connection conn = DriverManager.getConnection(url, username, password)){
 				
 				String sqlForUserKey = "SELECT from users WHERE " 
@@ -63,7 +61,7 @@ public class BankDAOImpl implements BankDAO {
 				
 				if (rsUser.getInt(userId) == rsPass.getInt(foreign key)) { //syntax is wrong
 					boolean match = true;
-					loggedIn = true;}
+					final loggedIn = true;}
 				} catch(SQLException e) {
 				e.printStackTrace();
 				}
@@ -71,9 +69,8 @@ public class BankDAOImpl implements BankDAO {
 			}
 
 
-			//I think I can just query the DAO whether user&pass match and return true
-			//same method for employee & customer users
-		
+
+	
 		
 		
 		

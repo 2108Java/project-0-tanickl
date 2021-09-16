@@ -1,20 +1,35 @@
 package com.revature.tan.models;
 
-public class Customer extends User {
+import com.revature.tan.service.Authentication;
+
+public class Customer extends User implements Authentication {
 
 	public Customer() {
 		// TODO Auto-generated constructor stub
 	}
-//end of Customer class
-}
 
-/////////////////
-//
-//
-//	
-//
-//
-//
-//
-//
-//////////////////
+	@Override
+	public boolean validate(User a) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean authenticate(User a) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEmployee() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setEmployee(boolean isEmployee) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
