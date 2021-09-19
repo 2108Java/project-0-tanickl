@@ -2,17 +2,12 @@ package com.revature.tan.service;
 
 import com.revature.tan.models.User;
 
-public interface Authentication {
+public interface Authenticate {
 
-	public boolean validate(User a); //check if user exists
-		
-	public boolean authenticate(User a); //verify that they are the user
-
-
+	public boolean validUser(String userName);
 	
+	public boolean authenticUser(String userPass);
 
-	
-	
 	
 //end of interface
 }

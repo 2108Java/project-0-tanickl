@@ -68,10 +68,23 @@ public class BankDAOImpl implements BankDAO {
 			return loggedIn;
 			}
 
+ps.setstring(1, ); //the 1 refers to the question mark in something like
+String sql = "SELECT * FROM users_table WHERE username = ?";
+//come back to the video.09.17.0905 to see this in detail.
 
+while(rs.next()) {
+	u.setId(rs.getInt("user_id"));
+	u.setName(rs.getString("user_real_name"));
+	u.setUsername(rs.getString("username"));
+	u.setPassword(rs.getString("user_pass"));
 
-	
-		
+	//we are gonna use two different daos to instantiate stuff we need
+//he made a UserDAOImpl with sql-statement method names
+UserDAO uDAO = new UserDAOImpl(); //declaring the new instance as an interface makes refactoring easy
+//It preserves as contracts to the rest of the applications whatever methods we might change.
+//like we might change it to this later:
+UserDAO uDAO = new BetterDAOImpl();
+
 		
 		
 		@Override

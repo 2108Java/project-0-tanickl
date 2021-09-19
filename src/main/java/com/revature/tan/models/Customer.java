@@ -1,35 +1,38 @@
 package com.revature.tan.models;
 
-import com.revature.tan.service.Authentication;
+import java.util.List;
 
-public class Customer extends User implements Authentication {
+public class Customer extends User {
 
+	//FIELDS
+	private List<Account> accountSummary;
+	private List<Transactions> actionSummary; //keep?
+	
 	public Customer() {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean validate(User a) {
-		// TODO Auto-generated method stub
-		return false;
+	public Customer(int userId, String userName, String userPass, String firstName, String lastName) {
+		super(userId, userName, userPass, firstName, lastName);
+		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean authenticate(User a) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<Account> getAccountSummary() {
+		return accountSummary;
 	}
 
-	@Override
-	public boolean isEmployee() {
-		// TODO Auto-generated method stub
-		return false;
+	public void setAccountSummary(List<Account> accountSummary) {
+		this.accountSummary = accountSummary;
 	}
 
-	@Override
-	public void setEmployee(boolean isEmployee) {
-		// TODO Auto-generated method stub
-
+	public List<Transactions> getActionSummary() {
+		return actionSummary;
 	}
 
+	public void setActionSummary(List<Transactions> actionSummary) {
+		this.actionSummary = actionSummary;
+	}
+
+	
+	
 }

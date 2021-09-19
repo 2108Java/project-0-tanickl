@@ -1,26 +1,48 @@
 package com.revature.tan.models;
 
+
+import java.util.List;
+
+import org.apache.logging.log4j.core.util.SystemClock;
+
 public abstract class User {
 
-	//fields
-	private String userId;
+	
+	//FIELDS // these correspond to columns in users table in database
+	private int userId;
 	private String userName;
+	private String userPass;
 	private String firstName;
 	private String lastName;
-	private boolean isEmployee;
 	
 	
-	//setters & getters
-	public String getUserId() {
+	//DEFAULT CONSTRUCTOR
+	public User() {
+		super();
+	}
+	
+	
+	//CONSTRUCTOR
+	public User(int userId, String userName, String userPass, String firstName, String lastName) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userPass = userPass;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+
+
+	
+	//GETTERS & SETTERS
+	public int getUserId() {
 		return userId;
 	}
 
 
-
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
 
 
 	public String getUserName() {
@@ -28,11 +50,19 @@ public abstract class User {
 	}
 
 
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
+
+	public String getUserPass() {
+		return userPass;
+	}
+
+
+	public void setUserPass(String userPass) {
+		this.userPass = userPass;
+	}
 
 
 	public String getFirstName() {
@@ -40,11 +70,9 @@ public abstract class User {
 	}
 
 
-
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
 
 
 	public String getLastName() {
@@ -52,30 +80,9 @@ public abstract class User {
 	}
 
 
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-
-
-	public abstract boolean isEmployee() {
-		return isEmployee;
-	}
-
-
-
-	public abstract void setEmployee(boolean isEmployee) {
-		this.isEmployee = isEmployee;
-	}
-
 	
-	
-	//constructors
-	public User() {
-		// TODO Auto-generated constructor stub
-	}
-//end of abstract class
 }
-//
-
