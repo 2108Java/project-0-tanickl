@@ -5,6 +5,7 @@ public class Employee extends User {
 	//NO ADDITIONAL FIELDS NECESSARY
 	
 	
+	//CONSTRUCTORS
 	public Employee() {
 		// TODO Auto-generated constructor stub
 	}
@@ -14,4 +15,7 @@ public class Employee extends User {
 	}
 
 
+	//METHODS
+	
+	
 }

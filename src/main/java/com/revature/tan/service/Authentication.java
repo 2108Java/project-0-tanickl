@@ -4,9 +4,8 @@ import com.revature.tan.models.User;
 
 public interface Authenticate {
 
-	public boolean validUser(String userName);
-	
-	public boolean authenticUser(String userPass);
+
+	boolean validUser(String userName, String userPass);
 
 	
 //end of interface

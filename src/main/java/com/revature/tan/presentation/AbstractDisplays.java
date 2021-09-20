@@ -3,46 +3,12 @@ package com.revature.tan.presentation;
 import com.revature.tan.presentation.ConsoleSession;
 
 
-//This abstract class handles my app's communication to the user by printing messages to the console.
-//Because the menus and messages displayed in this app are very routine, the partial abstraction
-//an abstract class provides allows me to store a lot of repetitive println statements here
-//so that the bodies of extending subclasses are not cluttered with unnecessary overrides.
-
-
 
 public abstract class AbstractDisplays {
 		
 	//NO FIELDS
-	
-	
-	//METHODS
-	
-		//STANDARD MESSAGES // these are static methods for use inside and outside this class.
-//		public static void saySorry() {
-//			final String sorry = "Sorry, but that wasn't a valid input. Please choose again.";
-//			System.out.println(sorry);
-//		}
-//
-//		private static void askWhich() {
-//			final String which = "You've got some options. Which do you select?";
-//			System.out.println(which);
-//		}
-//		
-//	
-//		public static void askInput() {
-//			final String input = "We need your input for this next part.";
-//			System.out.println(input);
-//		}
-//		
-//		public static void sayWelcome() {
-//			final String welcome = "Welcome to Tyler's Banking Simulation!";
-//			System.out.println(welcome);
-//		}
-//		
-//		
 		
-		
-		// INTERFACE METHODS // NEEDS OVERRIDE?
+		// METHODS FOR EXTENSION IN CHILD OVERRIDES OF INT METHODS
 		public void displayStart() {
 			System.out.println("(1) Login to my Customer Account.");
 			System.out.println("(2) Setup my New Customer Account.");
@@ -78,26 +44,5 @@ public abstract class AbstractDisplays {
 			System.out.println("Employee portal option 2");
 		}
 
-
-		
-//		//CASE SWITCH for adding MENU TITLES to HEADER & FOOTER
-//		public static String headOrFoot(String someMenuTitle) {
-//					String msg = new String();
-//					switch (someMenuTitle) {
-//							case "start": msg = "start menu.";
-//								break;
-//							case "newCustomer": msg = "registration menu for new customers.";
-//								break;
-//							case "customer": msg = "account menu for existing customers.";
-//								break;
-//							case "allEmp": msg = "employee portal.";
-//								break;
-//							case "newEmp": msg = "new employee setup menu.";
-//								break;
-//							case "empMain": msg =  "employee main menu.";
-//								break;
-//						} return msg;
-//				}
-	
 
 }

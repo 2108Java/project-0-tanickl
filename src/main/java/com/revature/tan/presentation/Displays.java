@@ -14,5 +14,9 @@ public interface Displays {
 	
 	public void displayEmpMain();
 	
-	
+	public boolean displayLogin();
+
+	public boolean displayRegistration();
+
+	public boolean displayPassMatch();
 }
