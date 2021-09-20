@@ -8,8 +8,8 @@ public interface RegisterUser {
 	
 	public boolean checkPassMatch(String b, String c);
 
-	public void registerUsername(String username);
+	public User registerUsername(String username);
 
-	public void registerPassword(String pass);
+	public User registerPassword(User u, String pass);
 	
 }

@@ -14,6 +14,26 @@ public class Employee extends User {
 		super(userId, userName, userPass, firstName, lastName);
 	}
 
+	public void viewAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewByName() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void approvePending() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void viewLog() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	//METHODS
 	

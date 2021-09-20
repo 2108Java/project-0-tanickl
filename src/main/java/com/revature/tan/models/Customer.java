@@ -35,4 +35,55 @@ public class Customer extends User {
 
 	
 	
+	
+	
+	//FROM DISPLAYIMPL
+	
+	public void mkAccount() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void viewAccounts() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void viewTransactions() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void mkDeposit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void mkWithdraw() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void mkTransfer() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void mkTransferOut() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void mkJoint() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

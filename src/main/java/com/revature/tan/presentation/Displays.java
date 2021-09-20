@@ -1,22 +1,23 @@
 package com.revature.tan.presentation;
 
+import com.revature.tan.models.User;
+
 public interface Displays {
 
 	public void displayStart();
 	
 	public void displayNewCust();
 	
-	public void displayCust();
+	public User displayCust();
 	
-	public void displayEmpPortal();
+	public void displayNewEmp();
 	
-	public void displayEmpNew();
+	public User displayEmpMenu();
 	
-	public void displayEmpMain();
-	
-	public boolean displayLogin();
+	public User displayLogin();
 
-	public boolean displayRegistration();
+	public User displayNewUserPass();
 
-	public boolean displayPassMatch();
+	public User displayRegisterUsername();
+
 }
