@@ -58,6 +58,25 @@ public class Customer extends User implements CustomerDAO {
 	
 	@Override
 	public void mkAccount() { //INSERT into table accounts ...
+		Connection connection = conn.getConnection();
+		String sql = "INSERT into accounts WHERE username = ?"; //finish
+		PreparedStatement ps;
+		User u = null;
+//		try {						//EDIT THIS BLOCK
+//			ps = connection.prepareStatement(sql);
+//			ps.setString(1, username);
+//			ResultSet rs = ps.executeQuery();
+//			while(rs.next()) {
+//				u.setUserId(rs.getInt("user_id"));
+//				u.setUserName(rs.getString("username"));
+//				u.setUserPass(rs.getString("pword"));
+//			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return u;
 		
 	}	
 	
@@ -65,36 +84,77 @@ public class Customer extends User implements CustomerDAO {
 
 
 	public void viewAccounts() { //SELECT from accounts WHERE user ...
-		// TODO Auto-generated method stub
+		Connection connection = conn.getConnection();
+		String sql = "SELECT * accounts WHERE username = ?"; //finish
+		PreparedStatement ps;
+		User u = null;
+//		try {						//EDIT THIS BLOCK
+//			ps = connection.prepareStatement(sql);
+//			ps.setString(1, username);
+//			ResultSet rs = ps.executeQuery();
+//			while(rs.next()) {
+//				u.setUserId(rs.getInt("user_id"));
+//				u.setUserName(rs.getString("username"));
+//				u.setUserPass(rs.getString("pword"));
+//			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return u;
 		
 	}
 
 
 	public void viewTransactions() { //SELECT from table transactions WHERE ...
-		// TODO Auto-generated method stub
+		Connection connection = conn.getConnection();
+		String sql = "SELECT from bank_log WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;
+		User u = null;
+//		try {						//EDIT THIS BLOCK
+//			ps = connection.prepareStatement(sql);
+//			ps.setString(1, username); //not username, but match to accounts(account_owner)
+//			ResultSet rs = ps.executeQuery();
+//			while(rs.next()) {
+//				u.setUserId(rs.getInt("user_id"));
+//				u.setUserName(rs.getString("username"));
+//				u.setUserPass(rs.getString("pword"));
+//			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return u;
 		
 	}
 
 
-	public void mkDeposit() { 	//UPDATE table accounts ...
+	public void mkDeposit(double x) { 	//UPDATE table accounts ...
+		Connection connection = conn.getConnection();
+		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;
+		
+		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;				//INSERT into tables transactions
+		
+	}
+
+
+	public void mkWithdraw(double x) { //UPDATE table accounts ...
 								//INSERT into tables transactions
 		
 	}
 
 
-	public void mkWithdraw() { //UPDATE table accounts ...
+	public void mkTransfer(double x) { //UPDATE table accounts ...
 								//INSERT into tables transactions
 		
 	}
 
 
-	public void mkTransfer() { //UPDATE table accounts ...
-								//INSERT into tables transactions
-		
-	}
-
-
-	public void mkTransferOut() { //UPDATE table accounts
+	public void mkTransferOut(double x) { //UPDATE table accounts
 									//INSERT into tables transactions
 		
 	}

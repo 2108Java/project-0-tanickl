@@ -43,6 +43,7 @@ public class AuthenticateImpl implements Authenticate {
 	@Override
 	public User getUser(String username) { //SELECT from users
 		User u = uDAO.selectUserByUserName(username);
+		
 		return u;
 	}
 

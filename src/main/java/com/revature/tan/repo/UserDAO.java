@@ -8,9 +8,9 @@ public interface UserDAO {
 
 	public boolean selectUniqueUserName(String a);
 
-	public User insertNewUserName(String d);
-
-	public User insertNewUserPass(String pass);
+//	public User insertNewUserName(String d);
+//
+//	public User insertNewUserPass(String pass);
 
 	public User insertNewUser(String username, String pass);
 
