@@ -3,22 +3,20 @@ package com.revature.tan;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import com.revature.tan.presentation.*;
+import com.revature.tan.*;
+import com.revature.tan.presentation.Displays;
+import com.revature.tan.presentation.DisplaysImpl;
 
 
 public class MainDriver {
 
 
+	public static void main(String[] args) {
 	
-	public static void sayWelcome() {
-		final String welcome = "Welcome to Tyler's Banking Simulation!";
-		System.out.println(welcome);
-	}
-
 
 	Displays go = new DisplaysImpl();
-	
+	go.displayStart();
 
 
-//end main driver
+	}
 }

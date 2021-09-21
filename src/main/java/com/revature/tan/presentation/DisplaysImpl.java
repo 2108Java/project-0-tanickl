@@ -4,6 +4,8 @@ import com.revature.tan.*;
 import com.revature.tan.models.Customer;
 import com.revature.tan.models.Employee;
 import com.revature.tan.models.User;
+import com.revature.tan.repo.CustomerDAO;
+import com.revature.tan.repo.EmpDAO;
 import com.revature.tan.service.Authenticate;
 import com.revature.tan.service.AuthenticateImpl;
 import com.revature.tan.service.RegisterUser;
@@ -14,9 +16,9 @@ import java.util.Scanner;
 public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	//FIELDS
-	private String lastMenu;
 	private String currentMenu;
 	private User user;
+	//private Scanner sc;
 	
 	
 	//CONSTRUCTORS
@@ -27,14 +29,13 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		this.user = user;
 	}
 	
+	
+	
+	//MISC METHODS
 	private void sayHeader() {
 		System.out.println("You are now viewing the " + this.currentMenu);
 	}
-	
-	
-	private void sayFooter() {
-		System.out.println("Enter '0' to return to the " + this.lastMenu);
-	}
+
 	
 	
 	private void saySorry() {
@@ -42,79 +43,102 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	}
 
 	
+	
+	
+	
 	//AUTHENTICATION & REGISTRATION DISPLAY METHODS
 
 	@Override
 	public User displayLogin() {
-		boolean loggingIn = true;
 		Authenticate auth = new AuthenticateImpl();
-		while(loggingIn) { 
+		boolean checkingUserName = true;
+		while(checkingUserName) { 
 			System.out.println("Please login to continue.");
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
 			String username = sc.nextLine();
+			if(!auth.validUser(username)) {
+				System.out.println("Sorry, that's not a valid username. Please try again.");
+			} else { checkingUserName = false; }
+		
+		boolean checkingPass = true;
+		while(checkingPass) {
 			System.out.println("Now enter your password:");
 			String password = sc.nextLine();
-			boolean isValid = auth.validUser(username,password);
-			if(isValid) {
+			sc.close();
+			if(!auth.validUserAndPass(username,password)) {
+				System.out.println("Sorry, that password is incorrect. Please try again.");
+			} else { checkingPass = false;
 				this.user = auth.getUser(username);
-				return user;
-				} else {
-					System.out.println("Sorry, but either your username or password was incorrect.");
-					System.out.println("Please try again.");
+			} return user;
 			}
-		} 
-	}
+			}
+		return user;
+		}	
 	
 	
 	
-
 
 	@Override
-	public User displayRegisterUsername() {
-		boolean registered = false; //do I also need to set this.user=null;
+	public void displayRegisterNewUser() {
+		boolean registering = true; //do I also need to set this.user=null;
 		RegisterUser x = new RegisterUserImpl();
-		while(!(registered)) { 
+		while(registering) { 
 			System.out.println("Please enter a username for your new account.");
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
 			String username = sc.nextLine();
-			boolean	isUnique = x.checkUsername(username);
-				if(isUnique) {
-					this.user = x.registerUsername(username);
-					registered = true;
-					return this.user;
-				} else {
-					System.out.println("Sorry, but that username is taken.");
-					System.out.println("Please try again.");
-				} return this.user;
-		}
-	}
-	
-	
-
-
-	@Override
-	public User displayNewUserPass() {
-		boolean matched = false;
-		RegisterUser x = new RegisterUserImpl();
-		while(!(matched)) {
-			System.out.println("Please enter a new password:");
-			Scanner sc = new Scanner(System.in);
-			String pass = sc.nextLine();
-			System.out.println("Please re-enter your password:");
-			String pass2 = sc.nextLine();
-			
-			boolean	isMatching = x.checkPassMatch(pass,pass2);
-			if(isMatching) {
-				x.registerPassword(this.user, pass);
-				matched = true;
-			} else {
-				System.out.println("Sorry, but those passwords don't match.");
+			if(!x.checkUsername(username)) {
+				System.out.println("Sorry, but that username is taken.");
 				System.out.println("Please try again.");
-			} return this.user;
-		}
-	}
+			} else { registering = false; }
+			
+				boolean matching = true;
+				while(matching) {
+					System.out.println("Please enter a new password:");
+					String pass = sc.nextLine();
+					System.out.println("Please re-enter your password:");
+					String pass2 = sc.nextLine();
+					sc.close();
+					if(pass.equals(pass2)) {
+						this.user.setUserPass(pass);
+						this.user.setUserName(username);
+						x.registerNewUser(username, pass);
+						matching = false;
+					} else {
+						System.out.println("Sorry, but those passwords don't match.");
+						System.out.println("Please try again.");
+					} 
+				}
+			}
+	}	
+
+	
+	
+
+
+//	@Override
+//	public User displayNewUserPass() {
+//		boolean matched = false;
+//		RegisterUser x = new RegisterUserImpl();
+//		while(!(matched)) {
+//			System.out.println("Please enter a new password:");
+//			Scanner sc = new Scanner(System.in);
+//			String pass = sc.nextLine();
+//			System.out.println("Please re-enter your password:");
+//			String pass2 = sc.nextLine();
+//			sc.close();
+//			if(pass.equals(pass2)) {
+//				this.user.setUserName(pass);
+//				x.registerPassword(pass);
+//				matched = true;
+//			} else {
+//				System.out.println("Sorry, but those passwords don't match.");
+//				System.out.println("Please try again.");
+//			} return this.user;
+//		}
+//		return user;
+//	}
 	
 	
 	
@@ -125,10 +149,8 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		this.user = null;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to Tyler's Banking Simulation!");
-		this.lastMenu = null;
 		this.currentMenu = "start menu.";
 		this.sayHeader();
-		//this.sayFooter(); IS NULL for START MENU
 		super.displayStart();
 			String choice = sc.nextLine();
 					switch(choice) {
@@ -140,21 +162,20 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						break;
 					case "4": displayNewEmp();
 					default: saySorry();
-						break;
-					} 
+					} sc.close();
 	}
 
 	
-
-
-
+//I might also want to overload this method and provide a parameterized constructor 
+	//so that the DAO interface can call the same display
+	//are do I actually want some of these methods to return a display?
+	//Ben had his ToDo methods ACCEPT User as arg.
 	@Override
 	public User displayCust() { //do I want to return a User or accept as arg? //same for emp?
 		displayLogin();
-		Customer c = (Customer) this.user;
+		CustomerDAO c = (Customer) this.user;
 		this.currentMenu = "account menu for existing customers.";
 		this.sayHeader();
-		//this.sayFooter();
 		super.menuCust();
 			Scanner sc = new Scanner(System.in);
 				String choice = sc.nextLine();
@@ -162,7 +183,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					case "1": c.mkAccount();//existing cust register for new acct
 						break;
 					case "2": c.viewAccounts();//view my account balances
-						break;
+						break;					//Ben's todo had println(u.getToDoList());
 					case "3": c.viewTransactions();//view transactions 
 						break;
 					case "4": c.mkDeposit();// make a deposit
@@ -180,7 +201,8 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						displayStart();
 						break;
 					default: saySorry();
-					} return this.user;
+					} sc.close();
+					return this.user;
 	}
 	
 	
@@ -197,6 +219,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	}
 	
 	
+	
 	@Override
 	public void displayNewEmp() {
 		this.user = new Employee();
@@ -209,10 +232,11 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	}
 	
 	
+	
 	@Override
-	public User displayEmpMenu() {
+	public User displayEmpMenu() { //or should it return an EmpDAO?
 		displayLogin();
-		Employee e = (Employee) this.user;
+		EmpDAO e = (Employee) this.user;
 		this.currentMenu = "employee main menu.";
 		this.sayHeader();
 		//this.sayFooter();
@@ -233,7 +257,8 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				displayStart();
 				break;
 			default: saySorry();
-			}	
+			} sc.close();
+			return e;	
 	}
 	
 

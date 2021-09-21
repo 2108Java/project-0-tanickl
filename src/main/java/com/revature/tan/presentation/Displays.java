@@ -1,6 +1,7 @@
 package com.revature.tan.presentation;
 
 import com.revature.tan.models.User;
+import com.revature.tan.*;
 
 public interface Displays {
 
@@ -16,8 +17,10 @@ public interface Displays {
 	
 	public User displayLogin();
 
-	public User displayNewUserPass();
+//	public User displayNewUserPass();
+//
+//	public User displayRegisterUsername();
 
-	public User displayRegisterUsername();
+	public void displayRegisterNewUser();
 
 }

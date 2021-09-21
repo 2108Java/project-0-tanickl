@@ -1,6 +1,19 @@
 package com.revature.tan.models;
 
-public class Employee extends User {
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Properties;
+import com.revature.tan.*;
+import com.revature.tan.repo.EmpDAO;
+
+
+public class Employee extends User implements EmpDAO {
 
 	//NO ADDITIONAL FIELDS NECESSARY
 	
@@ -14,28 +27,34 @@ public class Employee extends User {
 		super(userId, userName, userPass, firstName, lastName);
 	}
 
-	public void viewAll() {
+	
+	//METHODS from EmpDAO
+	@Override
+	public void viewAll() { // SELECT from ACCOUNTS
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void viewByName() {
+	@Override
+	public void viewByName() { //SELECT from ACCOUNTS where
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void approvePending() {
+	@Override
+	public void approvePending() { //UPDATE 
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void viewLog() {
+	@Override
+	public void viewLog() { //SELECT 
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	//METHODS
+	//OTHER METHODS
 	
 	
 }

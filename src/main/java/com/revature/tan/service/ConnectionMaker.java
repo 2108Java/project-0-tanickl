@@ -8,20 +8,30 @@ import java.sql.SQLException;
 
 public class ConnectionMaker {
 
-	private static final String URL = "";
-	private static final String USERNAME="";
-	private static final String PASSWORD = "";
+	//FIELDS
+	// Consider changing to AWS
+	private static final String URL = "jdbc:postgresql://localhost/5432/postgres";
+	private static final String USERNAME= "postgres";
+	private static final String PASSWORD = "49STOREdata40$16";
 	
-	public Connection getConnection() {
-		try(Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);){
-			return conn;
-	}catch(SQLException e){
-		//exception logic
-	}
-	} 
 	
+	//CONSTRUCTOR
 	public ConnectionMaker() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	//METHODS
+	public Connection getConnection() {
+		try(Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);){
+			return conn;
+		}catch(SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+	} 
+	
+	
+
 
 }
