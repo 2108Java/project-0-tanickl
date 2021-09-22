@@ -6,13 +6,7 @@ import com.revature.tan.*;
 public interface Displays {
 
 	public void displayStart();
-	
-	
-	public User displayCust();
-	
-	
-	public User displayEmpMenu();
-	
+		
 	
 	public User displayLogin();
 
@@ -20,7 +14,13 @@ public interface Displays {
 	public void displayRegisterNewUser();
 
 
-	void displayNewUser();
+	public void displayNewUser();
+
+
+	public User displayCust(User u);
+
+
+	User displayEmpMenu(User u);
 
 
 }

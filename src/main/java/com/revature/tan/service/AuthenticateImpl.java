@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.revature.tan.*;
 import com.revature.tan.models.User;
 import com.revature.tan.repo.UserDAO;
-import com.revature.tan.repo.UserDAOImpl;
+import com.revature.tan.service.UserDAOImpl;
 import java.sql.Connection;
 
 public class AuthenticateImpl implements Authenticate {
@@ -18,12 +18,13 @@ public class AuthenticateImpl implements Authenticate {
 		
 	}
 
-
-
+	
+	User u;
 
 	@Override
 	public boolean validUser(String userName) { //SELECT from users
-		User u = getUser(userName);
+		Authenticate auth = new AuthenticateImpl();
+		User u = auth.getUser(userName);
 		if(u == null) {
 			return false;
 		} else {
@@ -34,7 +35,8 @@ public class AuthenticateImpl implements Authenticate {
 
 	@Override
 	public boolean validUserAndPass(String userName, String userPass) { //SELECT from users
-		User u = getUser(userName);
+		Authenticate auth = new AuthenticateImpl();
+		User u = auth.getUser(userName);
 		if(u.getUserPass().equals(userPass)) {
 			return true;
 		} else {

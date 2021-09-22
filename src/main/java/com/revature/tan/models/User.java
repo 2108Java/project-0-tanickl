@@ -24,9 +24,13 @@ public class User {
 	public User(String userName, String userPass, boolean isEmp) {
 		this.userName = userName;
 		this.userPass = userPass;
-		this.isEmp = isEmp;
+		this.setEmp(isEmp);
 	}
 
+	public User(String userName, String userPass) {
+		this.userName = userName;
+		this.userPass = userPass;
+	}
 
 	
 	//GETTERS & SETTERS
@@ -57,6 +61,19 @@ public class User {
 
 	public void setUserPass(String userPass) {
 		this.userPass = userPass;
+	}
+
+
+
+
+
+	public void setEmp(boolean isEmp) {
+		this.isEmp = isEmp;
+	}
+
+
+	public boolean getIsEmp() {
+		return this.isEmp;
 	}
 	
 }

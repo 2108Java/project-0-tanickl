@@ -1,5 +1,6 @@
 package com.revature.tan.repo;
 
+import com.revature.tan.models.Account;
 
 public interface CustDAO {
 
@@ -10,4 +11,5 @@ public interface CustDAO {
 	public void mkWithdraw();
 	public void mkTransfer();
 	public void mkTransferOut();
+	void mkAccount(Account a);
 }

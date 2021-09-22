@@ -21,6 +21,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	
 	//CONSTRUCTORS
 	public DisplaysImpl() {
+		
 	}
 	
 
@@ -46,60 +47,66 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	@Override
 	public User displayLogin() {
-		this.u = new User();
 		Authenticate auth = new AuthenticateImpl();
 		boolean checkingUserName = true;
 			do { 
-			System.out.println("Please login to continue.");
-			System.out.println("Enter your username now:");
-			Scanner sc = new Scanner(System.in);
-			String username = sc.nextLine();
-			if(!auth.validUser(username)) {
-				System.out.println("Sorry, that's not a valid username. Please try again.");
-				break;
-			} else { 
-				this.u.setUserName(username);
-				checkingUserName = false; }
-			} while (checkingUserName); 
+				System.out.println("Please login to continue.");
+				System.out.println("Enter your username now:");
+				Scanner sc = new Scanner(System.in);
+				String username = sc.nextLine();
+				if(!auth.validUser(username)) {
+					System.out.println("Sorry, that's not a valid username. Please try again.");
+				} else { 
+					this.u.setUserName(username);
+					checkingUserName = false; }
+				} while (checkingUserName); 
 		
 		boolean checkingPass = true;
-		do {
-			System.out.println("Now enter your password:");
-			Scanner sc2 = new Scanner(System.in);
-			String password = sc2.nextLine();
-			sc2.close();
-			String username = this.u.getUserName();
-			if(!auth.validUserAndPass(username,password)) {
-				System.out.println("Sorry, that password is incorrect. Please try again.");
-			} else { checkingPass = false;
-				this.u = auth.getUser(username);}
+			do {
+				System.out.println("Now enter your password:");
+				Scanner sc2 = new Scanner(System.in);
+				String password = sc2.nextLine();
+				sc2.close();
+				String username = this.u.getUserName();
+				if(!auth.validUserAndPass(username,password)) {
+					System.out.println("Sorry, that password is incorrect. Please try again.");
+				} else { this.u.setUserPass(password);
+					checkingPass = false; 	}
+				}
+				while(checkingPass);
+				
+				System.out.println("Thanks for logging in.");
+				Displays next = new DisplaysImpl();
+				if(u.getIsEmp()) {next.displayEmpMenu(u); }
+				else { next.displayCust(this.u); }
 				return u;
-			} while(checkingPass);
-			} 
+	}
 
-			
-	
+
 	
 	
 
 	@Override
 	public void displayRegisterNewUser() {
+		User u2;
+		String username;
+		String pass;
 		boolean registering = true; //do I also need to set this.user=null;
 		RegisterUser x = new RegisterUserImpl();
 		while(registering) { 
 			System.out.println("Please enter a username for your new account.");
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
-			String username = sc.nextLine();
+			username = sc.nextLine();
 			if(x.checkUsername(username)) {
 				System.out.println("Sorry, but that username is taken.");
 				System.out.println("Please try again.");
 			} else { registering = false; }
 			
-				boolean matching = true;
+			boolean matching = true;
 				while(matching) {
 					System.out.println("Please enter a new password:");
-					String pass = sc.nextLine();
+					pass = sc.nextLine();
 					System.out.println("Please re-enter your password:");
 					String pass2 = sc.nextLine();
 					if(!pass.equals(pass2)) {
@@ -107,15 +114,15 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						System.out.println("Please try again.");
 					} else {
 						System.out.println("Are you registering as an employee? Type yes or no.");
-						String isEmp = sc.nextLine();
-						if(isEmp == "yes") {
-						x.registerNewUser(username, pass, true);
-						matching = false;
-					} else { x.registerNewUser(username, pass, false); }
-					}					
-					}
-					}
+						String yesno = sc.nextLine();
+						boolean isEmp = (yesno == "yes"); 
+						x.registerNewUser(username, pass, isEmp);
+						matching = false; }
 		}
+		}
+					
+			}
+		
 
 	
 	
@@ -135,11 +142,9 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		super.displayStart();
 			String choice = sc.nextLine();
 					switch(choice) {
-					case "1": displayCust();
+					case "1": displayLogin();
 						break;
 					case "2": displayNewUser();
-						break;
-					case "3": displayEmpMenu();
 						break;
 					default: saySorry();
 						break;
@@ -148,8 +153,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	
 	@Override
-	public User displayCust() { //do I want to return a User or accept as arg? //same for emp?
-		this.displayLogin();
+	public User displayCust(User u) { //do I want to return a User or accept as arg? //same for emp?
 		CustDAO c = new CustDAOImpl();
 		this.currentMenu = "account menu for existing customers.";
 		this.sayHeader();
@@ -197,8 +201,8 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	
 	
 	@Override
-	public User displayEmpMenu() { //or should it return an EmpDAO?
-		this.displayLogin();
+	@Override
+	public User displayEmpMenu(User u) { //or should it return an EmpDAO?
 		EmpDAO e = new EmpDAOImpl();
 		this.currentMenu = "employee main menu.";
 		this.sayHeader();

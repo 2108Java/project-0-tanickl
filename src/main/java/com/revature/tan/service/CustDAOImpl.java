@@ -8,8 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
+
 import com.revature.tan.*;
 import com.revature.tan.models.User;
+import com.revature.tan.models.*;
 import com.revature.tan.repo.CustDAO;
 import com.revature.tan.service.ConnectionMaker;
 
@@ -21,26 +24,22 @@ public class CustDAOImpl implements CustDAO {
 
 
 
-
 	//FROM DISPLAYIMPL
 	
 	@Override
-	public void mkAccount() { //INSERT into table accounts ...
-		
+	public void mkAccount(Account a) { //INSERT into table accounts ...
+		double startBal;
 		Connection connection = conn.getConnection();
-		String sql = "INSERT into accounts WHERE username = ?"; //finish
+		String sql = "insert into bsim_accounts (balance, type_of, fk_user) values ( ?, ?, ?)";
 		PreparedStatement ps;
-		User u = null;
-//		try {						//EDIT THIS BLOCK
-//			ps = connection.prepareStatement(sql);
-//			ps.setString(1, username);
-//			ResultSet rs = ps.executeQuery();
-//			while(rs.next()) {
-//				u.setUserId(rs.getInt("user_id"));
-//				u.setUserName(rs.getString("username"));
-//				u.setUserPass(rs.getString("pword"));
-//			}
-			connection.close();
+		try {						
+			ps = connection.prepareStatement(sql);
+			ps.setDouble(1, a.getBalance());
+			ps.setString(2, a.getAcctType());
+			ps.setInt(3, a.getUserForKey());
+			ResultSet rs = ps.executeQuery();
+			}
+		//	connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -52,33 +51,28 @@ public class CustDAOImpl implements CustDAO {
 	
 
 
-	public void viewAccounts() { //SELECT from accounts WHERE user ...
+	public void viewAccounts(Account a) { //SELECT from accounts WHERE user ...
+		int fk = a.getUserForKey();
 		Connection connection = conn.getConnection();
-		String sql = "SELECT * accounts WHERE username = ?"; //finish
+		String sql = "SELECT * from bsim_accounts WHERE fk_user = ?"; 
 		PreparedStatement ps;
-		User u = null;
-//		try {						//EDIT THIS BLOCK
-//			ps = connection.prepareStatement(sql);
-//			ps.setString(1, username);
-//			ResultSet rs = ps.executeQuery();
-//			while(rs.next()) {
-//				u.setUserId(rs.getInt("user_id"));
-//				u.setUserName(rs.getString("username"));
-//				u.setUserPass(rs.getString("pword"));
-//			}
-			connection.close();
+		try {
+			ps = connection.prepareStatement(sql);
+			ps.setInt(0, fk);
+			ResultSet rs = ps.executeQuery();
+			System.out.println(rs.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
 
 
 
-	public void viewTransactions() { //SELECT from table transactions WHERE ...
+	public void viewTransactions(User u) { //SELECT from table transactions WHERE ...
 		Connection connection = conn.getConnection();
-		String sql = "SELECT from bank_log WHERE  = ?"; //finish , make sure rs is debit and credit
+		String sql = "SELECT from bsim_log WHERE  = ?"; //finish , make sure rs is debit and credit
 		PreparedStatement ps;
-		User u = null;
+		User u = //
 //		try {						//EDIT THIS BLOCK
 //			ps = connection.prepareStatement(sql);
 //			ps.setString(1, username); //not username, but match to accounts(account_owner)
@@ -96,10 +90,14 @@ public class CustDAOImpl implements CustDAO {
 }		
 
 
-	public void mkDeposit() { 	//UPDATE table accounts ...
+	public void mkDeposit(Account a, double amt) { 
 		Connection connection = conn.getConnection();
-		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
+		String sql = "UPDATE bsim_accounts SET balance = ?  WHERE acct_num = ?";
 		PreparedStatement ps;
+		try {
+			ps = connection.prepareStatement(sql);
+			ps.setDouble(1, 0);
+		}
 		
 		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
 		PreparedStatement ps;				//INSERT into tables transactions
@@ -136,6 +134,40 @@ public class CustDAOImpl implements CustDAO {
 		
 		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
 		PreparedStatement ps;								//INSERT into tables transactions
+		
+	}
+
+
+
+	//CALLED FROM DISPLAY
+	@Override
+	public void mkAccount() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void viewAccounts() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void viewTransactions() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mkDeposit(User u) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("");
 		
 	}
 

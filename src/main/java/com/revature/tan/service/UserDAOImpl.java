@@ -1,4 +1,4 @@
-package com.revature.tan.repo;
+package com.revature.tan.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.revature.tan.models.User;
+import com.revature.tan.repo.UserDAO;
 import com.revature.tan.service.ConnectionMaker;
 
 public class UserDAOImpl implements UserDAO {
@@ -32,7 +33,7 @@ public class UserDAOImpl implements UserDAO {
 				u.setUserName(rs.getString("username"));
 				u.setUserPass(rs.getString("pword"));
 			}
-			connection.close();
+//			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +46,7 @@ public class UserDAOImpl implements UserDAO {
 	public User insertNewUser(String username, String pass, boolean isEmp) {
 		ConnectionMaker conn = new ConnectionMaker();
 		Connection connection = conn.getConnection();
-		String sql = "INSERT INTO bsim_users (username, pword) values (?, ?)"; //or ('?', '?');"
+		String sql = "INSERT INTO bsim_users (username, pword) values (?, ?)"; //or is it ('?', '?');"
 		PreparedStatement ps;
 		User u = null;
 		try {
@@ -55,7 +56,7 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet rs = ps.executeQuery(); //try executeUpdate(); next
 			//gotta return a user, but hwo?
 			u = selectUserByUserName(username);
-			connection.close();
+//			connection.close();
 			} catch (SQLException e) {
 			e.printStackTrace();
 		} return u;
