@@ -20,7 +20,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User selectUserByUserName(String username) {
 		Connection connection = conn.getConnection();
-		String sql = "SELECT * FROM bank_users WHERE username = ?";
+		String sql = "SELECT * FROM bsim_users WHERE username = ?";
 		PreparedStatement ps;
 		User u = null;
 		try {
@@ -44,14 +44,42 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User insertNewUser(String username, String pass) {
 			
-		return null;
+		Connection connection = conn.getConnection();
+		String sql = "INSERT INTO bsim_users (username, pword) values (?, ?)"; //or ('?', '?');"
+		PreparedStatement ps;
+		User u = null;
+		try {
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, username);
+			ps.setString(2, pass);
+			ResultSet rs = ps.executeQuery(); //try executeUpdate(); next
+			//gotta return a user, but hwo?
+			u = selectUserByUserName(username);
+			connection.close();
+			} catch (SQLException e) {
+			e.printStackTrace();
+		} return u;
 	}
 	
 	
 	
 	@Override
 	public boolean selectUniqueUserName(String a) {
-		// TODO Auto-generated method stub
+	
+		Connection connection = conn.getConnection();
+		String sql = "SELECT * FROM bsim_users WHERE username = ?";
+		PreparedStatement ps;
+		User u = null;
+		try {
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, a);
+			ResultSet rs = ps.executeQuery();
+			if(a.equals(rs.getString(2))) {
+				return true;
+			} connection.close(); //move up or down? scope?
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

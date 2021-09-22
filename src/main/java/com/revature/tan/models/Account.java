@@ -3,46 +3,33 @@ package com.revature.tan.models;
 public class Account {
 
 	//FIELDS
-	private int owner;
-	private int number;
+	
+	private int pkAcct;
 	private boolean isApproved;
 	private double balance;
+	private String acctType;
+	private int userForKey;
 	
 	
-	//CONSTRUCTORS
-	public Account() {
+	//CONSTRUCTOR
+	public Account(int pkAcct, boolean isApproved, double balance, String acctType, int userForKey) {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-	public Account(int owner, int number, boolean isApproved, double balance) {
-		super();
-		this.owner = owner;
-		this.number = number;
+		this.pkAcct = pkAcct;
 		this.isApproved = isApproved;
 		this.balance = balance;
+		this.acctType = acctType;
+		this.userForKey = userForKey;
 	}
 
 
 	//GETTERS & SETTERS
-	public int getOwner() {
-		return owner;
+	public int getPkAcct() {
+		return pkAcct;
 	}
 
 
-	public void setOwner(int owner) {
-		this.owner = owner;
-	}
-
-
-	public int getNumber() {
-		return number;
-	}
-
-
-	public void setNumber(int number) {
-		this.number = number;
+	public void setPkAcct(int pkAcct) {
+		this.pkAcct = pkAcct;
 	}
 
 
@@ -65,8 +52,31 @@ public class Account {
 		this.balance = balance;
 	}
 
+
+	public String getAcctType() {
+		return acctType;
+	}
+
+
+	public void setAcctType(String acctType) {
+		this.acctType = acctType;
+	}
+
+
+	public int getUserForKey() {
+		return userForKey;
+	}
+
+
+	public void setUserForKey(int userForKey) {
+		this.userForKey = userForKey;
+	}	
+		
+
+}
+
 	
 	
 
-}
+
 

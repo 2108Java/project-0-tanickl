@@ -16,8 +16,11 @@ import com.revature.tan.service.*;
 
 public class Employee extends User implements EmpDAO {
 
-	//NO ADDITIONAL FIELDS NECESSARY
-	private ConnectionMaker conn; 
+	//FIELDS
+	private ConnectionMaker conn;
+	private List<Account> acctList;
+	
+	
 	
 	//CONSTRUCTORS
 	public Employee() {
@@ -37,10 +40,25 @@ public class Employee extends User implements EmpDAO {
 	@Override
 	public void viewAll() { // SELECT from ACCOUNTS
 		Connection connection = conn.getConnection();
-		String sql = "SELECT * FROM accounts";
+		String sql = "SELECT * FROM bsim_accounts"; //ben didn't use ; inside string
 		PreparedStatement ps;
-		// TODO Auto-generated method stub
-		
+		User u = null;
+		try {
+			ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				System.out.println(rs.toString());
+				
+				//account getters & setters
+				
+				u.setUserId(rs.getInt("user_id"));
+				u.setUserName(rs.getString("username"));
+				u.setUserPass(rs.getString("pword"));
+			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

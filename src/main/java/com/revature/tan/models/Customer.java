@@ -10,13 +10,16 @@ import java.util.List;
 import java.util.Properties;
 import com.revature.tan.*;
 import com.revature.tan.repo.CustomerDAO;
+import com.revature.tan.service.ConnectionMaker;
 
 public class Customer extends User implements CustomerDAO {
 
-	//FIELDS //keep these? I can probably just SQL logic do the same
-			//or maybe getObject();?
+
+	//FIELDS
+	private ConnectionMaker conn;
 	private List<Account> accountSummary;
 	private List<Transactions> actionSummary;
+	
 	
 	//CONSTRUCTOR // Do I ever pass args to the Cust constructor?
 	public Customer(int userId, String userName, String userPass) {

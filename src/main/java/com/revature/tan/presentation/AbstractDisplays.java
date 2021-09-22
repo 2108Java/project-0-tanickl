@@ -12,7 +12,8 @@ public abstract class AbstractDisplays {
 		public void displayStart() {
 			System.out.println("(1) Login to my Customer Account.");
 			System.out.println("(2) Setup my New Customer Account.");
-			System.out.println("(3) Take me to the Employee Portal.");
+			System.out.println("(3) Login to Employee Menu.");
+			System.out.println("(4) Setup my New Employee Account.");
 		} 
 
 		

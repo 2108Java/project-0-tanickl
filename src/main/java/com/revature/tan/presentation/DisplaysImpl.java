@@ -117,28 +117,6 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	
 
 
-//	@Override
-//	public User displayNewUserPass() {
-//		boolean matched = false;
-//		RegisterUser x = new RegisterUserImpl();
-//		while(!(matched)) {
-//			System.out.println("Please enter a new password:");
-//			Scanner sc = new Scanner(System.in);
-//			String pass = sc.nextLine();
-//			System.out.println("Please re-enter your password:");
-//			String pass2 = sc.nextLine();
-//			sc.close();
-//			if(pass.equals(pass2)) {
-//				this.user.setUserName(pass);
-//				x.registerPassword(pass);
-//				matched = true;
-//			} else {
-//				System.out.println("Sorry, but those passwords don't match.");
-//				System.out.println("Please try again.");
-//			} return this.user;
-//		}
-//		return user;
-//	}
 	
 	
 	
@@ -212,8 +190,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		this.user = new Customer();
 		this.currentMenu = "registration menu for new customers.";
 		this.sayHeader();
-		displayRegisterUsername();
-		displayNewUserPass();
+		displayRegisterNewUser();
 		System.out.println("Now use your new credentials to login.");
 		displayCust();
 	}
@@ -225,8 +202,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		this.user = new Employee();
 		this.currentMenu = "new employee set-up menu.";
 		this.sayHeader();
-		displayRegisterUsername();
-		displayNewUserPass();
+		displayRegisterNewUser();
 		System.out.println("Now use your new credentials to login.");
 		displayEmpMenu();
 	}
