@@ -17,11 +17,11 @@ public class MainDriver {
 
 	public static void main(String[] args) {
 	
-	User u = new User("tester", "passpass", true);
+//	User u = new User("tester", "passpass", true);
+	
 	Displays go = new DisplaysImpl();
 	
-	
-	go.displayCust(u);
+	go.displayStart();
 
  
 

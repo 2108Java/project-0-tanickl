@@ -21,7 +21,13 @@ public class Account {
 		this.userForKey = userForKey;
 	}
 
+	public Account(int userForKey) {
+		super();
+		
+		this.userForKey = userForKey;
+	}
 
+	
 	//GETTERS & SETTERS
 	public int getPkAcct() {
 		return pkAcct;

@@ -1,6 +1,7 @@
 package com.revature.tan.presentation;
 
 import com.revature.tan.*;
+import com.revature.tan.models.Account;
 import com.revature.tan.models.User;
 import com.revature.tan.repo.CustDAO;
 import com.revature.tan.repo.EmpDAO;
@@ -17,7 +18,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	//FIELDS
 	private String currentMenu;
-	private User u;
+	private User u = new User();
 	
 	//CONSTRUCTORS
 	public DisplaysImpl() {
@@ -66,7 +67,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				System.out.println("Now enter your password:");
 				Scanner sc2 = new Scanner(System.in);
 				String password = sc2.nextLine();
-				sc2.close();
+//				sc2.close();
 				String username = this.u.getUserName();
 				if(!auth.validUserAndPass(username,password)) {
 					System.out.println("Sorry, that password is incorrect. Please try again.");
@@ -77,7 +78,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				
 				System.out.println("Thanks for logging in.");
 				Displays next = new DisplaysImpl();
-				if(u.getIsEmp()) {next.displayEmpMenu(u); }
+				if(u.getIsEmp()) {next.displayEmpMenu(this.u); }
 				else { next.displayCust(this.u); }
 				return u;
 	}
@@ -93,6 +94,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		String pass;
 		boolean registering = true; //do I also need to set this.user=null;
 		RegisterUser x = new RegisterUserImpl();
+		
 		while(registering) { 
 			System.out.println("Please enter a username for your new account.");
 			System.out.println("Enter your username now:");
@@ -118,10 +120,10 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						boolean isEmp = (yesno == "yes"); 
 						x.registerNewUser(username, pass, isEmp);
 						matching = false; }
-		}
+				}
 		}
 					
-			}
+		}
 		
 
 	
@@ -153,32 +155,72 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	
 	@Override
-	public User displayCust(User u) { //do I want to return a User or accept as arg? //same for emp?
+	public User displayCust(User u) {
+		Account a = new Account(this.u.getUserId());
 		CustDAO c = new CustDAOImpl();
 		this.currentMenu = "account menu for existing customers.";
 		this.sayHeader();
 		super.menuCust();
 			Scanner sc = new Scanner(System.in);
-				String choice = sc.nextLine();
+			String choice = sc.nextLine();
+			System.out.println("Choose from the options that follow.");
 					switch(choice) {
-					case "1": c.mkAccount();//existing cust register for new acct
+					case "1": 
+						
+						System.out.println("Hello" + this.u.getUserName() + ".");
+						System.out.println("Enter 1 to begin a new SAVINGS account.");
+						System.out.println("Enter 2 to begin a new CHECKING account.");
+						String which = sc.nextLine();
+							if(which == "1") { 
+								a.setAcctType("savings");	
+								} 
+							if(which == "2") {
+								a.setAcctType("checking");
+							} 
+							System.out.println("How much will you deposit for your starting balance?");
+							double x = sc.nextDouble();
+							a.setBalance(x);
+							c.mkAccount(a);
 						break;
-					case "2": c.viewAccounts();//view my account balances
+					case "2": 
+						System.out.println("Here is the current data for all your accounts:");
+						c.viewAccounts(a);//view my account balances
 						break;					//Ben's todo had println(u.getToDoList());
-					case "3": c.viewTransactions();//view transactions 
+//					case 3: 
+//						
+//						c.viewTransactions();//view transactions 
+//						break;
+					case "4": 
+						System.out.println("Here is a list of your current accounts:");
+						c.viewAccounts(a);
+						System.out.println("Enter the account number to which you'll deposit:");
+						a.setUserForKey(sc.nextInt());
+						System.out.println("Enter the amount to DEPOSIT:");
+						double y = sc.nextDouble();
+						c.mkDeposit(a, y);// make a deposit
 						break;
-					case "4": c.mkDeposit();// make a deposit
+					case "5": 
+						System.out.println("Here is a list of your current accounts:");
+						c.viewAccounts(a);
+						System.out.println("Enter the account number from which you'll withdraw:");
+						a.setUserForKey(sc.nextInt());
+						System.out.println("Enter the amount to WITHDRAW:");
+						double z = sc.nextDouble();
+						c.mkWithdraw(a, z); // make a withdrawal
 						break;
-					case "5": c.mkWithdraw(); // make a withdrawal
+					case "6": 
+						
+						c.mkTransfer();// transfer between my accounts
 						break;
-					case "6": c.mkTransfer();// transfer between my accounts
-						break;
-					case "7": c.mkTransferOut();// transfer to another user
+					case "7": 
+						
+						c.mkTransferOut();// transfer to another user
 						break;
 					case "0": //exit and start over
 						displayStart();
 						break;
 					default: saySorry();
+//					String choice = sc.nextLine();
 					} sc.close();
 					return this.u;
 	}

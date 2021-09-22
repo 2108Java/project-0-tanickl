@@ -22,9 +22,11 @@ public class RegisterUserImpl implements RegisterUser {
 	
 	
 	@Override
-	public boolean checkUsername(String a) { //SELECT from tables & check that username is unique
-		ConnectionMaker conn = new ConnectionMaker();
-		Connection connection = conn.getConnection();
+	public boolean checkUsername(User u) { //SELECT from tables & check that username is unique
+//		ConnectionMaker conn = new ConnectionMaker();
+//		Connection connection = conn.getConnection();
+		String a = 
+		
 		UserDAO uDAO = new UserDAOImpl();
 		return uDAO.selectUniqueUserName(a); //true if unique
 	}
@@ -40,6 +42,14 @@ public class RegisterUserImpl implements RegisterUser {
 		UserDAO uDAO = new UserDAOImpl();		
 		uDAO.insertNewUser(username, pass, isEmp);
 		
+	}
+
+
+
+	@Override
+	public boolean checkUsername(String a) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

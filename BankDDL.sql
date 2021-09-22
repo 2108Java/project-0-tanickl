@@ -2,6 +2,12 @@
 --bsim_users, bsim_accounts,  xxxbsim_acct_owners, xxxxbsim_log
 
 
+create table bsim2_users (
+	user_id serial primary key, 
+	username varchar(20) unique not null,
+	pword varchar(20) not null,
+	is_emp boolean default false not null
+	)
 
 
 
@@ -41,7 +47,7 @@ insert into bsim_users (username, pword, is_emp) values ('firstemployee', '123ca
 select * from bsim_users where is_emp = false;
 
 --see whole table
-select * from bsim_accounts;
+select * from bsim_users;
 
 
 
@@ -83,7 +89,7 @@ insert into bsim_accounts (is_approved, balance, type_of, fk_user) values (true,
 --	fk_user int references bsim_users(user_id)
 --);
 
-select * from bsim_accounts;
+select * from bsim_users;
 
 
 -- I could write multiple statements, let's try that first. 

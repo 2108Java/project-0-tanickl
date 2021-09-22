@@ -12,7 +12,7 @@ public class AuthenticateImpl implements Authenticate {
 
 	private UserDAO uDAO;
 	
-	private ConnectionMaker conn = new ConnectionMaker();
+//	private ConnectionMaker conn = new ConnectionMaker();
 	
 	public AuthenticateImpl() {
 		

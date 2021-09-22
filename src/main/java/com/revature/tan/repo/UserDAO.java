@@ -1,5 +1,6 @@
 package com.revature.tan.repo;
 
+import com.revature.tan.models.Account;
 import com.revature.tan.models.User;
 
 public interface UserDAO {
@@ -10,4 +11,5 @@ public interface UserDAO {
 
 	public User insertNewUser(String username, String pass, boolean isEmp);
 
+	public User selectUserById(Account a);
 }
