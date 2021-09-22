@@ -1,4 +1,4 @@
-package com.revature.tan.models;
+package com.revature.tan.service;
 
 
 
@@ -14,31 +14,27 @@ import com.revature.tan.repo.EmpDAO;
 import com.revature.tan.repo.UserDAO;
 import com.revature.tan.service.*;
 
-public class Employee extends User implements EmpDAO {
+public class EmpDAOImpl implements EmpDAO {
 
 	//FIELDS
-	private ConnectionMaker conn;
-	private List<Account> acctList;
+	private ConnectionMaker conn = new ConnectionMaker();
+	
 	
 	
 	
 	//CONSTRUCTORS
-	public Employee() {
+	public EmpDAOImpl() {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
-	//not using this constructor yet
-//	public Employee(int userId, String userName, String userPass, String firstName, String lastName) {
-//		super(userId, userName, userPass, firstName, lastName);
-//	}
+
 
 	
 	
 	//METHODS from EmpDAO
 	@Override
 	public void viewAll() { // SELECT from ACCOUNTS
+		ConnectionMaker conn;
 		Connection connection = conn.getConnection();
 		String sql = "SELECT * FROM bsim_accounts"; //ben didn't use ; inside string
 		PreparedStatement ps;
@@ -63,6 +59,7 @@ public class Employee extends User implements EmpDAO {
 
 	@Override
 	public void viewByName(String custUserName) { //SELECT from ACCOUNTS where
+		ConnectionMaker conn;
 		Connection connection = conn.getConnection();
 		String sql = "SELECT * FROM accounts WHERE username = ?"; //finish
 		PreparedStatement ps;
@@ -89,6 +86,7 @@ public class Employee extends User implements EmpDAO {
 
 	@Override
 	public void approvePending() { //UPDATE 
+		ConnectionMaker conn;
 		Connection connection = conn.getConnection();
 		String sql = "SELECT * accounts WHERE is_approved = false;"; //check this
 		PreparedStatement ps;
@@ -99,6 +97,7 @@ public class Employee extends User implements EmpDAO {
 
 	@Override
 	public void viewLog() { //SELECT 
+		ConnectionMaker conn;
 		Connection connection = conn.getConnection();
 		String sql = "SELECT * bank_log";
 		PreparedStatement ps;

@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.apache.logging.log4j.core.util.SystemClock;
 
-public abstract class User {
+public class User {
 
 	
 	//FIELDS // these correspond to columns in users table in database
-	protected int userId;
-	protected String userName;
-	protected String userPass;
-//	private String firstName; //will implement if I get around to it
-//	private String lastName;
-	
+	private int userId;
+	private String userName;
+	private String userPass;
+	private boolean isEmp;
 	
 	//DEFAULT CONSTRUCTOR
 	public User() {
@@ -23,11 +21,10 @@ public abstract class User {
 	
 	
 	//CONSTRUCTOR
-	public User(int userId, String userName, String userPass) {
-		super();
-		this.userId = userId;
+	public User(String userName, String userPass, boolean isEmp) {
 		this.userName = userName;
 		this.userPass = userPass;
+		this.isEmp = isEmp;
 	}
 
 
@@ -61,7 +58,5 @@ public abstract class User {
 	public void setUserPass(String userPass) {
 		this.userPass = userPass;
 	}
-
-
 	
 }

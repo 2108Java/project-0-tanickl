@@ -10,10 +10,10 @@ import com.revature.tan.service.ConnectionMaker;
 
 public class UserDAOImpl implements UserDAO {
 
-	private ConnectionMaker conn;
+	private ConnectionMaker conn = new ConnectionMaker();
 	
 	public UserDAOImpl() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	
@@ -42,8 +42,8 @@ public class UserDAOImpl implements UserDAO {
 
 	
 	@Override
-	public User insertNewUser(String username, String pass) {
-			
+	public User insertNewUser(String username, String pass, boolean isEmp) {
+		
 		Connection connection = conn.getConnection();
 		String sql = "INSERT INTO bsim_users (username, pword) values (?, ?)"; //or ('?', '?');"
 		PreparedStatement ps;
@@ -65,7 +65,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public boolean selectUniqueUserName(String a) {
-	
+		ConnectionMaker conn = new ConnectionMaker();
 		Connection connection = conn.getConnection();
 		String sql = "SELECT * FROM bsim_users WHERE username = ?";
 		PreparedStatement ps;
@@ -76,24 +76,13 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet rs = ps.executeQuery();
 			if(a.equals(rs.getString(2))) {
 				return true;
-			} connection.close(); //move up or down? scope?
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-//	@Override
-//	public User insertNewUserName(String d) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public User insertNewUserPass(String pass) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
 
 
 

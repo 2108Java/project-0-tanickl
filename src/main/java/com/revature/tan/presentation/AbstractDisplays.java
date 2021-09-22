@@ -11,9 +11,8 @@ public abstract class AbstractDisplays {
 		// METHODS FOR EXTENSION IN CHILD OVERRIDES OF INT METHODS
 		public void displayStart() {
 			System.out.println("(1) Login to my Customer Account.");
-			System.out.println("(2) Setup my New Customer Account.");
+			System.out.println("(2) Setup a New Customer or Employee User.");
 			System.out.println("(3) Login to Employee Menu.");
-			System.out.println("(4) Setup my New Employee Account.");
 		} 
 
 		
@@ -21,8 +20,10 @@ public abstract class AbstractDisplays {
 		public void menuEmp() {
 			System.out.println("(1) View all accounts.");
 			System.out.println("(2) Search accounts by customer name.");
-			System.out.println("(3) Approve pending accounts.");
-			System.out.println("(4) View the transaction log.");
+			System.out.println("(3) Approve a pending account.");
+			System.out.println("(4) Reject a pending account.");
+			System.out.println("(5) View the transaction log.");
+			System.out.println("(0) Exit session and start over.");
 		}
 		
 

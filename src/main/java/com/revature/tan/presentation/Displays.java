@@ -7,20 +7,20 @@ public interface Displays {
 
 	public void displayStart();
 	
-	public void displayNewCust();
 	
 	public User displayCust();
 	
-	public void displayNewEmp();
 	
 	public User displayEmpMenu();
 	
+	
 	public User displayLogin();
 
-//	public User displayNewUserPass();
-//
-//	public User displayRegisterUsername();
 
 	public void displayRegisterNewUser();
+
+
+	void displayNewUser();
+
 
 }

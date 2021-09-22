@@ -15,7 +15,9 @@
 
 --	* 
 --+ •As a customer, I can apply for a new bank account with a starting balance.* 3 points
---	* 
+--	* add starting balance to this
+
+
 --+ •As a customer, I can view the balance of a specific account (that belongs to me).* 1 point
 --	* 
 --+ •As a customer, I can make a withdrawal or deposit to a specific account (that belongs to me).* 2 points

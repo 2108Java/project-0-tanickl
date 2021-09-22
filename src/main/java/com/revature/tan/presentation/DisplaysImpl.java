@@ -1,13 +1,13 @@
 package com.revature.tan.presentation;
 
 import com.revature.tan.*;
-import com.revature.tan.models.Customer;
-import com.revature.tan.models.Employee;
 import com.revature.tan.models.User;
-import com.revature.tan.repo.CustomerDAO;
+import com.revature.tan.repo.CustDAO;
 import com.revature.tan.repo.EmpDAO;
 import com.revature.tan.service.Authenticate;
 import com.revature.tan.service.AuthenticateImpl;
+import com.revature.tan.service.CustDAOImpl;
+import com.revature.tan.service.EmpDAOImpl;
 import com.revature.tan.service.RegisterUser;
 import com.revature.tan.service.RegisterUserImpl;
 
@@ -17,17 +17,13 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	//FIELDS
 	private String currentMenu;
-	private User user;
-	//private Scanner sc;
-	
+	private User u;
 	
 	//CONSTRUCTORS
 	public DisplaysImpl() {
 	}
 	
-	public DisplaysImpl(User user) { //use when invoking next display?
-		this.user = user;
-	}
+
 	
 	
 	
@@ -50,6 +46,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	@Override
 	public User displayLogin() {
+		this.u = new User();
 		Authenticate auth = new AuthenticateImpl();
 		boolean checkingUserName = true;
 		while(checkingUserName) { 
@@ -57,7 +54,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
 			String username = sc.nextLine();
-			if(!auth.validUser(username)) {
+			if(!(auth.validUser(username))) {
 				System.out.println("Sorry, that's not a valid username. Please try again.");
 			} else { checkingUserName = false; }
 		
@@ -69,11 +66,10 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 			if(!auth.validUserAndPass(username,password)) {
 				System.out.println("Sorry, that password is incorrect. Please try again.");
 			} else { checkingPass = false;
-				this.user = auth.getUser(username);
-			} return user;
+				this.u = auth.getUser(username);
+			} return this.u;
 			}
-			}
-		return user;
+			}return this.u;
 		}	
 	
 	
@@ -88,7 +84,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
 			String username = sc.nextLine();
-			if(!x.checkUsername(username)) {
+			if(x.checkUsername(username)) {
 				System.out.println("Sorry, but that username is taken.");
 				System.out.println("Please try again.");
 			} else { registering = false; }
@@ -99,19 +95,20 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					String pass = sc.nextLine();
 					System.out.println("Please re-enter your password:");
 					String pass2 = sc.nextLine();
-					sc.close();
-					if(pass.equals(pass2)) {
-						this.user.setUserPass(pass);
-						this.user.setUserName(username);
-						x.registerNewUser(username, pass);
-						matching = false;
-					} else {
-						System.out.println("Sorry, but those passwords don't match.");
+					if(!pass.equals(pass2)) {
+						System.out.println("Sorry but those passwords don't match.");
 						System.out.println("Please try again.");
-					} 
-				}
-			}
-	}	
+					} else {
+						System.out.println("Are you registering as an employee? Type yes or no.");
+						String isEmp = sc.nextLine();
+						if(isEmp == "yes") {
+						x.registerNewUser(username, pass, true);
+						matching = false;
+					} else { x.registerNewUser(username, pass, false); }
+					}					
+					}
+					}
+		}
 
 	
 	
@@ -124,7 +121,6 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	//MENU DISPLAY METHODS
 	@Override
 	public void displayStart() {
-		this.user = null;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to Tyler's Banking Simulation!");
 		this.currentMenu = "start menu.";
@@ -134,24 +130,20 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					switch(choice) {
 					case "1": displayCust();
 						break;
-					case "2": displayNewCust();
+					case "2": displayNewUser();
 						break;
 					case "3": displayEmpMenu();
 						break;
-					case "4": displayNewEmp();
 					default: saySorry();
+						break;
 					} sc.close();
 	}
 
 	
-//I might also want to overload this method and provide a parameterized constructor 
-	//so that the DAO interface can call the same display
-	//are do I actually want some of these methods to return a display?
-	//Ben had his ToDo methods ACCEPT User as arg.
 	@Override
 	public User displayCust() { //do I want to return a User or accept as arg? //same for emp?
-		displayLogin();
-		CustomerDAO c = (Customer) this.user;
+		this.displayLogin();
+		CustDAO c = new CustDAOImpl();
 		this.currentMenu = "account menu for existing customers.";
 		this.sayHeader();
 		super.menuCust();
@@ -172,70 +164,64 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						break;
 					case "7": c.mkTransferOut();// transfer to another user
 						break;
-					case "8": c.mkJoint(); // authorize a jointuser
-						break;
 					case "0": //exit and start over
-						this.user = null;
 						displayStart();
 						break;
 					default: saySorry();
 					} sc.close();
-					return this.user;
+					return this.u;
 	}
 	
 	
 
 	@Override
-	public void displayNewCust() { //I'm wondering about the return types. User or void?
-		this.user = new Customer();
-		this.currentMenu = "registration menu for new customers.";
+	public void displayNewUser() { //I'm wondering about the return types. User or void?
+		
+		this.currentMenu = "registration menu for all new users.";
 		this.sayHeader();
 		displayRegisterNewUser();
 		System.out.println("Now use your new credentials to login.");
-		displayCust();
+		displayLogin();
 	}
 	
 	
-	
-	@Override
-	public void displayNewEmp() {
-		this.user = new Employee();
-		this.currentMenu = "new employee set-up menu.";
-		this.sayHeader();
-		displayRegisterNewUser();
-		System.out.println("Now use your new credentials to login.");
-		displayEmpMenu();
-	}
+
 	
 	
 	
 	@Override
 	public User displayEmpMenu() { //or should it return an EmpDAO?
-		displayLogin();
-		EmpDAO e = (Employee) this.user;
+		this.displayLogin();
+		EmpDAO e = new EmpDAOImpl();
 		this.currentMenu = "employee main menu.";
 		this.sayHeader();
-		//this.sayFooter();
 		super.menuEmp();
 		Scanner sc = new Scanner(System.in);
 		String choice = sc.nextLine();
 			switch(choice) {
 			case "1": e.viewAll();//view all customer accounts
 				break;
-			case "2": e.viewByName();//search accounts by customer name
+			case "2": 
+				System.out.println("Enter the username you want to search:");
+				String cust = sc.nextLine();
+				e.viewByName(cust);//search accounts by customer name
 				break;
-			case "3": e.approvePending();//approve pending accounts
+			case "3": 
+				System.out.println("Enter the username of the pending account you want to approve.");
+				e.approvePending();//approve pending accounts
 				break;
-			case "4": e.viewLog();// view the transaction log
+			case "4": 
+				System.out.println("Enter the username of the pending account you want to reject.");
+				e.approvePending();//approve pending accounts
+				break;
+			case "5": e.viewLog();// view the transaction log
 				break;
 			case "0":
-				this.user = null;
 				displayStart();
 				break;
 			default: saySorry();
 			} sc.close();
-			return e;	
-	}
+			return this.u;
+	} 
 	
-
 }

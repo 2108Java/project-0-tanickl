@@ -5,10 +5,13 @@ import java.util.Scanner;
 import com.revature.tan.*;
 import com.revature.tan.models.User;
 import com.revature.tan.repo.UserDAO;
+import com.revature.tan.repo.UserDAOImpl;
 
 public class AuthenticateImpl implements Authenticate {
 
 	private UserDAO uDAO;
+	
+	private ConnectionMaker conn = new ConnectionMaker();
 	
 	public AuthenticateImpl() {
 		
@@ -42,8 +45,9 @@ public class AuthenticateImpl implements Authenticate {
 
 	@Override
 	public User getUser(String username) { //SELECT from users
-		User u = new uDAO.selectUserByUserName(username);
-		
+		User u = new User();
+		UserDAO uDAO = new UserDAOImpl();
+		u = uDAO.selectUserByUserName(username);
 		return u;
 	}
 

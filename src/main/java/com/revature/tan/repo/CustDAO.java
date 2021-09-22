@@ -1,7 +1,7 @@
 package com.revature.tan.repo;
 
 
-public interface CustomerDAO {
+public interface CustDAO {
 
 	public void mkAccount();
 	public void viewAccounts();
@@ -10,5 +10,4 @@ public interface CustomerDAO {
 	public void mkWithdraw(double x);
 	public void mkTransfer(double x);
 	public void mkTransferOut(double x);
-	public void mkJoint();
 }

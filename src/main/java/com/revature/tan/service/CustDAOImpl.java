@@ -1,4 +1,4 @@
-package com.revature.tan.models;
+package com.revature.tan.service;
 
 
 import java.sql.Connection;
@@ -9,49 +9,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import com.revature.tan.*;
-import com.revature.tan.repo.CustomerDAO;
+import com.revature.tan.repo.CustDAO;
 import com.revature.tan.service.ConnectionMaker;
 
-public class Customer extends User implements CustomerDAO {
+public class CustDAOImpl implements CustDAO {
 
 
 	//FIELDS
-	private ConnectionMaker conn;
-	private List<Account> accountSummary;
-	private List<Transactions> actionSummary;
-	
-	
-	//CONSTRUCTOR // Do I ever pass args to the Cust constructor?
-	public Customer(int userId, String userName, String userPass) {
-		userId = this.getUserId();
-		userName = this.getUserName();
-		userPass = this.getUserPass();
-	}
-	
-	
-	public Customer() {
-		this.userId = this.getUserId();
-		this.userName = this.getUserName();
-		this.userPass = this.getUserPass();
-	}
+	private ConnectionMaker conn = new ConnectionMaker();
 
-	
-	//I might not need these, or if I do I might need something different in DAO
-//	public List<Account> getAccountSummary() {
-//		return accountSummary;
-//	}
-//
-//	public void setAccountSummary(List<Account> accountSummary) {
-//		this.accountSummary = accountSummary;
-//	}
-//
-//	public List<Transactions> getActionSummary() {
-//		return actionSummary;
-//	}
-//
-//	public void setActionSummary(List<Transactions> actionSummary) {
-//		this.actionSummary = actionSummary;
-//	}
+
 
 	
 	
@@ -162,9 +129,5 @@ public class Customer extends User implements CustomerDAO {
 		
 	}
 
-
-	public void mkJoint() { //INSERT INTO table JOINT ACCOUNTS 
-		
-	}
 	
 }
