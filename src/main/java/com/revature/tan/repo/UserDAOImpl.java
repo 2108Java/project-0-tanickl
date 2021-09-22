@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public User insertNewUser(String username, String pass, boolean isEmp) {
-		
+		ConnectionMaker conn = new ConnectionMaker();
 		Connection connection = conn.getConnection();
 		String sql = "INSERT INTO bsim_users (username, pword) values (?, ?)"; //or ('?', '?');"
 		PreparedStatement ps;

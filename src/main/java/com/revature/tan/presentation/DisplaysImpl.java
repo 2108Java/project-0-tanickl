@@ -49,28 +49,35 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		this.u = new User();
 		Authenticate auth = new AuthenticateImpl();
 		boolean checkingUserName = true;
-		while(checkingUserName) { 
+			do { 
 			System.out.println("Please login to continue.");
 			System.out.println("Enter your username now:");
 			Scanner sc = new Scanner(System.in);
 			String username = sc.nextLine();
-			if(!(auth.validUser(username))) {
+			if(!auth.validUser(username)) {
 				System.out.println("Sorry, that's not a valid username. Please try again.");
-			} else { checkingUserName = false; }
+				break;
+			} else { 
+				this.u.setUserName(username);
+				checkingUserName = false; }
+			} while (checkingUserName); 
 		
 		boolean checkingPass = true;
-		while(checkingPass) {
+		do {
 			System.out.println("Now enter your password:");
-			String password = sc.nextLine();
-			sc.close();
+			Scanner sc2 = new Scanner(System.in);
+			String password = sc2.nextLine();
+			sc2.close();
+			String username = this.u.getUserName();
 			if(!auth.validUserAndPass(username,password)) {
 				System.out.println("Sorry, that password is incorrect. Please try again.");
 			} else { checkingPass = false;
-				this.u = auth.getUser(username);
-			} return this.u;
-			}
-			}return this.u;
-		}	
+				this.u = auth.getUser(username);}
+				return u;
+			} while(checkingPass);
+			} 
+
+			
 	
 	
 	

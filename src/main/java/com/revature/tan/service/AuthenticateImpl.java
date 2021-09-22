@@ -6,6 +6,7 @@ import com.revature.tan.*;
 import com.revature.tan.models.User;
 import com.revature.tan.repo.UserDAO;
 import com.revature.tan.repo.UserDAOImpl;
+import java.sql.Connection;
 
 public class AuthenticateImpl implements Authenticate {
 
@@ -45,7 +46,7 @@ public class AuthenticateImpl implements Authenticate {
 
 	@Override
 	public User getUser(String username) { //SELECT from users
-		User u = new User();
+		User u = null;
 		UserDAO uDAO = new UserDAOImpl();
 		u = uDAO.selectUserByUserName(username);
 		return u;

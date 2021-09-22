@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import com.revature.tan.*;
+import com.revature.tan.models.User;
 import com.revature.tan.repo.CustDAO;
 import com.revature.tan.service.ConnectionMaker;
 
@@ -20,14 +21,12 @@ public class CustDAOImpl implements CustDAO {
 
 
 
-	
-	
-	
-	
+
 	//FROM DISPLAYIMPL
 	
 	@Override
 	public void mkAccount() { //INSERT into table accounts ...
+		
 		Connection connection = conn.getConnection();
 		String sql = "INSERT into accounts WHERE username = ?"; //finish
 		PreparedStatement ps;
@@ -46,9 +45,9 @@ public class CustDAOImpl implements CustDAO {
 			e.printStackTrace();
 		}
 		
-		return u;
+
 		
-	}	
+
 	
 	
 
@@ -72,9 +71,7 @@ public class CustDAOImpl implements CustDAO {
 			e.printStackTrace();
 		}
 		
-		return u;
-		
-	}
+
 
 
 	public void viewTransactions() { //SELECT from table transactions WHERE ...
@@ -94,14 +91,12 @@ public class CustDAOImpl implements CustDAO {
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+			System.out.println("This is last line of viewTransactions");
 		
-		return u;
-		
-	}
+}		
 
 
-	public void mkDeposit(double x) { 	//UPDATE table accounts ...
+	public void mkDeposit() { 	//UPDATE table accounts ...
 		Connection connection = conn.getConnection();
 		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
 		PreparedStatement ps;
@@ -112,20 +107,35 @@ public class CustDAOImpl implements CustDAO {
 	}
 
 
-	public void mkWithdraw(double x) { //UPDATE table accounts ...
-								//INSERT into tables transactions
+	public void mkWithdraw() { //UPDATE table accounts ...
+		Connection connection = conn.getConnection();
+		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;
+		
+		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;							//INSERT into tables transactions
 		
 	}
 
 
-	public void mkTransfer(double x) { //UPDATE table accounts ...
-								//INSERT into tables transactions
+	public void mkTransfer() { //UPDATE table accounts ...
+		Connection connection = conn.getConnection();
+		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;
+		
+		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;							//INSERT into tables transactions
 		
 	}
 
 
-	public void mkTransferOut(double x) { //UPDATE table accounts
-									//INSERT into tables transactions
+	public void mkTransferOut() { //UPDATE table accounts
+		Connection connection = conn.getConnection();
+		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;
+		
+		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
+		PreparedStatement ps;								//INSERT into tables transactions
 		
 	}
 

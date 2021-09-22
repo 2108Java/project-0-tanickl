@@ -10,7 +10,8 @@ public class ConnectionMaker {
 	
 	//FIELDS
 	// Consider changing to AWS
-	private static final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/postgres";
+	//private	static final String URL = "jdbc:postgresql://localhost:5432/";
+	private	static final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
 	private static final String USERNAME= "postgres";
 	private static final String PASSWORD = "49STOREdata40$16";
 	
