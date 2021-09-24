@@ -11,46 +11,47 @@ import com.revature.tan.repo.UserDAOImpl;
 
 public class RegisterUserImpl implements RegisterUser {
 
-	private UserDAO uDAO;
-	private ConnectionMaker conn = new ConnectionMaker();
-	//I think this is a layer that has to query DAO
+	//FIELDS
+	private UserDAO uDAO = new UserDAOImpl();
 
+
+	//CONSTR
 	public RegisterUserImpl() {
 	
 	}
 
 	
 	
+	//METHODS
+	
 	@Override
-	public boolean checkUsername(User u) { //SELECT from tables & check that username is unique
-//		ConnectionMaker conn = new ConnectionMaker();
-//		Connection connection = conn.getConnection();
-		String a = 
-		
-		UserDAO uDAO = new UserDAOImpl();
+	public boolean checkUsername(User u) {
+
+		String a = u.getUserName();
 		return uDAO.selectUniqueUserName(a); //true if unique
 	}
 
-	
+
+	@Override
+	public boolean checkUsername(String a) {
+		return false;
+	}
 	
 
 
 
 	@Override
 	public void registerNewUser(String username, String pass, boolean isEmp) {
-		ConnectionMaker conn = new ConnectionMaker();
-		UserDAO uDAO = new UserDAOImpl();		
 		uDAO.insertNewUser(username, pass, isEmp);
 		
 	}
 
-
-
 	@Override
-	public boolean checkUsername(String a) {
-		// TODO Auto-generated method stub
-		return false;
+	public void registerNewUser(User u) {
+		
+		uDAO.insertNewUser(u.getUserName(),u.getUserPass(),u.getIsEmp());
 	}
+
 
 
 	

@@ -10,8 +10,24 @@ public class Account {
 	private String acctType;
 	private int userForKey;
 	
+
+	//NO-ARG CONSTRUCTOR, includes test values for fields
+	public Account() {
+		this.pkAcct = -1;
+		this.isApproved = false;
+		this.balance = 0.00;
+		this.userForKey = -1;
+	}
 	
-	//CONSTRUCTOR
+	
+	//CONSTRUCTORS
+	
+	public Account(User u) {
+		this.userForKey = u.getUserId();
+	}
+	
+	
+	
 	public Account(int pkAcct, boolean isApproved, double balance, String acctType, int userForKey) {
 		super();
 		this.pkAcct = pkAcct;

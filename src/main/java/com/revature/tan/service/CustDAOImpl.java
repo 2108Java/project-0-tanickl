@@ -11,16 +11,16 @@ import java.util.Properties;
 import java.util.Scanner;
 
 import com.revature.tan.*;
-import com.revature.tan.models.User;
 import com.revature.tan.models.*;
 import com.revature.tan.repo.CustDAO;
+import com.revature.tan.repo.UserDAO;
 import com.revature.tan.service.ConnectionMaker;
 
 public class CustDAOImpl implements CustDAO {
 
 
 	//FIELDS
-	 private ConnectionMaker conn;
+//	private Connection connection = ConnectionMaker.getConnection();
 
 
 
@@ -28,39 +28,53 @@ public class CustDAOImpl implements CustDAO {
 	
 	@Override
 	public void mkAccount(Account a) {
-		
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
+//		this.connection = ConnectionMaker.getConnection();
 //		Connection connection = conn.getConnection();
 		String sql = "insert into bsim_accounts (balance, type_of, fk_user) values ( ?, ?, ?)";
 		PreparedStatement ps;
-		try {						
+		try {
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			ps = connection.prepareStatement(sql);
 			ps.setDouble(1, a.getBalance());
 			ps.setString(2, a.getAcctType());
 			ps.setInt(3, a.getUserForKey());
-			ResultSet rs = ps.executeQuery();
-		//	connection.close();
+			ResultSet rs = ps.execute();
+			rs.close();
+			ps.close();
+			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-		
-
-		
-
 	
 	
+	public User viewAccounts(User u) {
+		
+		UserDAO uDAO = new UserDAOImpl();
+		return uDAO.getUser(u);
+	}
 
 
 	public void viewAccounts(Account a) { //SELECT from accounts WHERE user ...
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
+//		this.connection = ConnectionMaker.getConnection();
 		int fk = a.getUserForKey();
-		Connection connection = conn.getConnection();
 		String sql = "SELECT * from bsim_accounts WHERE fk_user = ?"; 
 		PreparedStatement ps;
 		try {
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			ps = connection.prepareStatement(sql);
 			ps.setInt(0, fk);
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps.executeQuery(); //execute
 			System.out.println(rs.toString());
+			rs.close();
+			ps.close();
+			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -68,7 +82,11 @@ public class CustDAOImpl implements CustDAO {
 
 
 
-//	public void viewTransactions(User u) { //SELECT from table transactions WHERE ...
+	public void viewTransactions(User u) { 
+		System.out.println("Here are your transactions:");
+		Displays next = new DisplaysImpl(u);
+		//SELECT from table transactions WHERE ...
+	}
 //		Connection connection = conn.getConnection();
 //		String sql = "SELECT from bsim_log WHERE  = ?"; //finish , make sure rs is debit and credit
 //		PreparedStatement ps;
@@ -91,15 +109,22 @@ public class CustDAOImpl implements CustDAO {
 
 
 	public User mkDeposit(Account a, double y) { 
-		Connection connection = conn.getConnection();
+//		this.connection = ConnectionMaker.getConnection();
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
 		String sql = "UPDATE bsim_accounts SET balance = ?  WHERE acct_num = ?";
 		PreparedStatement ps;
 		try {
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			ps = connection.prepareStatement(sql);
 			double z = (a.getBalance() + y);
 			ps.setDouble(1,z);
 			ps.setInt(2, a.getPkAcct());
-			ps.executeQuery();
+			ps.execute();
+//			rs.close();
+			ps.close();
+			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,41 +141,54 @@ public class CustDAOImpl implements CustDAO {
 	}
 
 
-	public User mkWithdraw(Account a, double z) { //UPDATE table accounts ...
-		Connection connection = conn.getConnection();
+	public void mkWithdraw(Account a, double z) { //UPDATE table accounts ...
+//		this.connection = ConnectionMaker.getConnection();
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
 		String sql = "UPDATE bsim_accounts SET balance = ?  WHERE acct_num = ?";
 		PreparedStatement ps;
 		try {
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 			ps = connection.prepareStatement(sql);
 			double r = (a.getBalance() + z);
 			ps.setDouble(1,r);
 			ps.setInt(2, a.getPkAcct());
-			ps.executeQuery();
+			ps.execute();
+//			rs.close();
+			ps.close();
+			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			System.out.println("Sorry but that deposit was not successful.");
 		}
-		User u = new User();
-		u.setUserId(a.getUserForKey());
-		return u;
+//		User u = new User();			//don't know why I had this block!
+//		u.setUserId(a.getUserForKey());
+//		return u;
 	}
 
 
 	public void mkTransfer() { //UPDATE table accounts ...
-		Connection connection = conn.getConnection();
+//		this.connection = ConnectionMaker.getConnection();
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
 		String sql = "UPDATE bsim_accounts SET balance = ? WHERE  = ?";
 		PreparedStatement ps;
-		
+		Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+//		rs.close();
+		ps.close();
+		connection.close();
 //		String sql2 = "UPDATE bank_log () WHERE  = ?"; //finish , make sure rs is debit and credit
 //		PreparedStatement ps;							//INSERT into tables transactions
 		
 	}
 
 
-	public void mkTransferOut() { //UPDATE table accounts
-		Connection connection = conn.getConnection();
+	public void mkTransferOut(int tdebit, String trUser, double amt2) { //UPDATE table accounts
+//		this.connection = ConnectionMaker.getConnection();
 		String sql = "UPDATE accounts WHERE  = ?"; //finish , make sure rs is debit and credit
 		PreparedStatement ps;
 		
@@ -161,57 +199,28 @@ public class CustDAOImpl implements CustDAO {
 
 
 
-	//CALLED FROM DISPLAY
+
+
+
+
+
 	@Override
-	public void mkAccount() {
+	public void mkTransfer(int debit, int credit, double amt) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 
-//	@Override
-//	public String viewAccounts(Account a) {
-//		
-//		System.out.println("Here is your current account data:");
-//		Connection connection = conn.getConnection();
-//		String sql = "SELECT bsim_accounts WHERE fk_user = ?"; //finish , make sure rs is debit and credit
-//		PreparedStatement ps;
-//		try {
-//			ps = connection.prepareStatement(sql);
-//			ps.setInt(1, a.getUserForKey());
-//			ps.executeQuery();
-//			ResultSet rs = 
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			System.out.println("Sorry but that deposit was not successful.");
-//		}
-//		User u = new User();
-//		u.setUserId(a.getUserForKey());
-//		return u;
-//	}
-	
-		
 
 
 
 
-	@Override
-	public void viewTransactions() {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 
-	@Override
-	public void mkDeposit(User u) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("");
-		
-	}
+
+
 
 	
 }

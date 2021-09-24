@@ -14,9 +14,11 @@ public class User {
 	private String userPass;
 	private boolean isEmp;
 	
-	//DEFAULT CONSTRUCTOR
+	//NO-ARG CONSTRUCTOR
 	public User() {
-		super();
+		this.userName = "undefined";
+		this.userPass = "undefined";
+		this.isEmp = false;
 	}
 	
 	
@@ -24,7 +26,7 @@ public class User {
 	public User(String userName, String userPass, boolean isEmp) {
 		this.userName = userName;
 		this.userPass = userPass;
-		this.setEmp(isEmp);
+		this.setIsEmp(isEmp); //if buggy, try this.isEmp = isEmp;
 	}
 
 	public User(String userName, String userPass) {
@@ -65,9 +67,7 @@ public class User {
 
 
 
-
-
-	public void setEmp(boolean isEmp) {
+	public void setIsEmp(boolean isEmp) {
 		this.isEmp = isEmp;
 	}
 
@@ -75,5 +75,15 @@ public class User {
 	public boolean getIsEmp() {
 		return this.isEmp;
 	}
+
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", userPass=" + userPass + ", isEmp=" + isEmp
+				+ "]";
+	}
+
+
+	
 	
 }

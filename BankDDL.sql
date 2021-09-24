@@ -1,6 +1,8 @@
 --Creating tables
---bsim_users, bsim_accounts,  xxxbsim_acct_owners, xxxxbsim_log
+--bsim_users, bsim_accounts,  maybe bsim_log, maybe bsim_acct_owners 
 
+
+select * bsim_accounts where is_approved = false;
 
 create table bsim2_users (
 	user_id serial primary key, 
@@ -10,7 +12,8 @@ create table bsim2_users (
 	)
 
 
-
+select * from bsim_accounts;
+insert into bsim_users (username,pword,is_emp) values ('garymcgary','casa123',false);
 
 
 --yes
@@ -62,7 +65,7 @@ create table bsim_accounts (
 	type_of acct_type,
 	fk_user int references bsim_users(user_id)
 	);
-select * from bsim_accounts ;
+select * from bsim_accounts where is_approved = true;
 
 --yes, for inserting parameterized new account
 insert into bsim_accounts (is_approved, balance, type_of, fk_user) values (true, 550, 'checking', 18);
@@ -133,4 +136,4 @@ select * from bsim_acct_owners;
 --	debit_acct int references bsim_accounts(account_num)
 --);
 
-
+select * from bsim_users;

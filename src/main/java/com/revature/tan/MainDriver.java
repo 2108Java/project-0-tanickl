@@ -13,13 +13,33 @@ import com.revature.tan.service.ConnectionMaker;
 
 public class MainDriver {
 
-	public ConnectionMaker conn = new ConnectionMaker();
-
 	public static void main(String[] args) {
 	
-//	User u = new User("tester", "passpass", true);
+//		final Connection connection = ConnectionMaker.getConnection();
+	//JDBC troubleshoot
 	
+	//1
+	// Consider changing to AWS
+	//private	static final String URL = "jdbc:postgresql://localhost:5432/";
+//	final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+//	final String USERNAME= "postgres";
+//	final String PASSWORD = "49STOREdata40$16";
+	
+	
+//	public Connection connection = ConnectionMaker.getConnection(); //to try as static method
+//	final ConnectionMaker connectionMaker = new ConnectionMaker(); //instantiating alone
+//	Connection connection = connectionMaker.getConnection();		//might need to switch off static then			
+//	connectionMaker.getConnection(); //try it alone
+	
+
+	
+	
+//	User u = new User("tester", "passpass", true); // no user here; construct in displayImpl
+	
+		
+		
 	Displays go = new DisplaysImpl();
+	
 	
 	go.displayStart();
 

@@ -7,5 +7,9 @@ public interface RegisterUser {
 	public boolean checkUsername(String a);
 
 	public void registerNewUser(String username, String pass, boolean b);
+
+	boolean checkUsername(User u);
+
+	void registerNewUser(User u);
 	
 }

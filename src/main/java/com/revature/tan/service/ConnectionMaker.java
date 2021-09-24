@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 
 
-public class ConnectionMaker {
+public class ConnectionMaker implements Connection {
 	
 	//FIELDS
 	// Consider changing to AWS
@@ -18,21 +18,22 @@ public class ConnectionMaker {
 	
 	//CONSTRUCTOR
 	public ConnectionMaker() {
-		// TODO Auto-generated constructor stub
+//		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+//		final String USERNAME= "postgres";
+//		final String PASSWORD = "49STOREdata40$16";
 	}
 	
 	
 	//METHODS
-	public Connection getConnection() {
-		try(Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);){
-			return conn;
+	public static Connection getConnection() { 
+		try(Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);){
+			return connection;
 		}catch(SQLException e){
+			System.out.println("Unable to connect to database!");
 			e.printStackTrace();
 			return null;
 		}
 	} 
 	
 	
-
-
 }

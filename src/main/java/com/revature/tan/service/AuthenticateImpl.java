@@ -10,16 +10,18 @@ import java.sql.Connection;
 
 public class AuthenticateImpl implements Authenticate {
 
-	private UserDAO uDAO;
+	//FIELDS
+	private UserDAO uDAO = new UserDAOImpl();
 	
-//	private ConnectionMaker conn = new ConnectionMaker();
+	
+//	private ConnectionMaker conn = new ConnectionMaker(); //I took this out because it was closing my stuff
+														  // especially since multiple interfaces call it
 	
 	public AuthenticateImpl() {
 		
 	}
 
-	
-	User u;
+
 
 	@Override
 	public boolean validUser(String userName) { //SELECT from users
@@ -47,9 +49,9 @@ public class AuthenticateImpl implements Authenticate {
 
 
 	@Override
-	public User getUser(String username) { //SELECT from users
+	public User getUser(String username) { //REWRITE!!!
 		User u = null;
-		UserDAO uDAO = new UserDAOImpl();
+
 		u = uDAO.selectUserByUserName(username);
 		return u;
 	}
