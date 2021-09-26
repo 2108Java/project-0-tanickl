@@ -209,12 +209,8 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 		System.out.println("Choose from the options that follow.");	
 		Scanner sc = new Scanner(System.in);
 			String choice = sc.nextLine();
-			
-					
 			switch(choice) {
-					
-					//new savings or checking account
-					case "1": 
+				case "1": //new savings or checking account 
 						System.out.println("Hello" + this.u.getUserName() + ".");
 						System.out.println("Enter 1 to begin a new SAVINGS account.");
 						System.out.println("Enter 2 to begin a new CHECKING account.");
@@ -304,7 +300,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						break;
 					default: saySorry();
 //					String choice = sc.nextLine(); //unnecessary here
-					} sc.close();
+					}
 					uu = this.u;
 					return this.displayCust(this.u); //want to see if this satisfies return requirement
 	}

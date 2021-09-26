@@ -41,7 +41,7 @@ public class CustDAOImpl implements CustDAO {
 			ps.setDouble(1, a.getBalance());
 			ps.setString(2, a.getAcctType());
 			ps.setInt(3, a.getUserForKey());
-			ResultSet rs = ps.execute();
+			ResultSet rs = ps.executeQuery();
 			rs.close();
 			ps.close();
 			connection.close();
