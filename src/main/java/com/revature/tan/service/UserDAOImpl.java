@@ -188,8 +188,11 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User getUser(User u) {
-		String username = u.getUserName(); 
-		return selectUserByUserName(username);
+		String username = u.getUserName();
+		User x = selectUserByUserName(username);
+		System.out.println("UserDAO got this user:");
+		System.out.println(x.toString());
+		return x;
 	}
 
 }

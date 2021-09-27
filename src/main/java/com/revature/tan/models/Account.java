@@ -27,7 +27,14 @@ public class Account {
 	}
 	
 	
+	public Account(int userForKey) {
+		super();
+		
+		this.userForKey = userForKey;
+	}
 	
+	
+	//CONSTRUCTOR, all fields explicit
 	public Account(int pkAcct, boolean isApproved, double balance, String acctType, int userForKey) {
 		super();
 		this.pkAcct = pkAcct;
@@ -37,11 +44,7 @@ public class Account {
 		this.userForKey = userForKey;
 	}
 
-	public Account(int userForKey) {
-		super();
-		
-		this.userForKey = userForKey;
-	}
+
 
 	
 	//GETTERS & SETTERS
@@ -92,6 +95,13 @@ public class Account {
 
 	public void setUserForKey(int userForKey) {
 		this.userForKey = userForKey;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Account [account number: " + pkAcct + ", is Approved = " + isApproved + ", balance = " + balance + ", acctType = "
+				+ acctType + ", owner's user id = " + userForKey + "]";
 	}	
 		
 

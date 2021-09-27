@@ -23,27 +23,16 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	//FIELDS
 	private String currentMenu;
 	private User u = new User(); 
-	public Connection connection = ConnectionMaker.getConnection();
-								//right now, I'm instantiating a new User at login
-								
-								//and then passing that user around to the different
-								 //methods below
-								 //But I might not even need to do that. Could just keep using
-								 //the same user object that belongs to this DisplayImpl object
-								 //as the diff methods get invoked.
-	
 	
 	
 	//CONSTRUCTORS
-	public DisplaysImpl(User u) { //This constructor will allow me to pass User objects to the next display
-		this.u = u;
-//		this.connection = ConnectionMaker.getConnection();
-								//It shouldn't be a problem for User objects the no-arg constr makes 
-	}							  //"undefined" username and password should show how its working
+	public DisplaysImpl(User u) { 
+		this.u = u; 
+	}							  
 	
 	public DisplaysImpl() {
 		this.u = new User();
-//		this.connection = ConnectionMaker.getConnection();
+
 	}
 	
 	
@@ -65,6 +54,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	@Override
 	public void displayStart() {
 //		this.u = new User(); //to reset user after session, starting over
+		super.displaySpace();
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to Tyler's Banking Simulation!");
 		this.currentMenu = "start menu.";
@@ -77,8 +67,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					case "2": displayNewUser();
 						break;
 					default: saySorry();
-						break;
-					} sc.close();
+					} displayStart();
 	}
 	
 	
@@ -87,8 +76,9 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	@Override
 	public User displayLogin() { //I could also return DisplayImpl objs and pass in User arg, if buggy
+		super.displaySpace();
 		Authenticate auth = new AuthenticateImpl();
-		
+		UserDAO uDAO = new UserDAOImpl();
 		//checks username
 		boolean checkingUserName = true;
 			do { 
@@ -109,7 +99,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				System.out.println("Now enter your password:");
 				Scanner sc2 = new Scanner(System.in);
 				String password = sc2.nextLine();
-				String username = this.u.getUserName(); //could also try moving this up
+				String username = this.u.getUserName(); 
 				if(!auth.validUserAndPass(username,password)) {
 					System.out.println("Sorry, that password is incorrect. Please try again.");
 				} else { this.u.setUserPass(password);
@@ -117,19 +107,21 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				} while(checkingPass);
 					
 		//finishes up, calls next display
-				System.out.println("Thanks for logging in.");
-				Displays next = new DisplaysImpl(this.u);//should be ok, but see comment on method sig line 
+			this.u = uDAO.getUser(u);
+				System.out.println("Thanks for logging in, " + u.getUserName() + ".");
+				System.out.println("Your user_id is " + u.getUserId());				
+				System.out.println("Your user_id is " + this.u.getUserId());
+				Displays next = new DisplaysImpl(this.u);
 					if(u.getIsEmp()) {next.displayEmpMenu(u); }
 					else { next.displayCust(this.u); }
-					return u;  //especially if this return type gets annoying
-							   //encapsulation might be best achieved by display types having user fields, users having accounts, accounts...
+					return u;
 	}
 
 
 	
 	@Override
-	public void displayNewUser() { //I'm wondering about the return types. User or void?
-		
+	public void displayNewUser() {
+		super.displaySpace();
 		this.currentMenu = "registration menu for all new users.";
 		this.sayHeader();
 		displayRegisterNewUser();
@@ -140,7 +132,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 
 	@Override
 	public void displayRegisterNewUser() {
-		//User u2; //should not need to do this now that I am using the constructor
+		super.displaySpace();
 		String username = this.u.getUserName();
 		String pass = this.u.getUserPass();
 		RegisterUser x = new RegisterUserImpl();
@@ -175,12 +167,13 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						System.out.println("Sorry, but those passwords don't match.");
 						System.out.println("Please try again.");
 					} else {
-						System.out.println("Are you registering as an employee? Type yes or no.");
-						String yesno = sc.nextLine();
-						boolean isEmp = (yesno.toString().equals("yes"));
+						System.out.println("Are you registering as an employee? Type 1 for yes or 0 for no.");
+						if(sc.nextInt() == 1) { this.u.setIsEmp(true);
+						} else if (sc.nextInt() == 0) { this.u.setIsEmp(false);}
+//						boolean isEmp = (yesno == 1);
 						this.u.setUserName(username);
 						this.u.setUserPass(pass2);
-						this.u.setIsEmp(isEmp);
+						
 //						x.registerNewUser(username, pass, isEmp);
 						x.registerNewUser(this.u);
 						matching = false; } 
@@ -199,25 +192,27 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	
 	@Override
 	public User displayCust(User u) {
-		CustDAO c = new CustDAOImpl();
-		UserDAO ud = new UserDAOImpl();
-		User uu = ud.getUser(this.u.getUserName());
+		this.u = u;
+		super.displaySpace();
 		this.currentMenu = "account menu for existing customers.";
 		this.sayHeader();
-			System.out.println("Welcome, " + u.getUserName());//including this as a test for how user is passed between display methods
-		super.menuCust();
+			System.out.println("Welcome, " + u.getUserName() + ".");//including this as a test for how user is passed between display methods
+			System.out.println("Your user_id is " + u.getUserId());
+			super.menuCust();
 		System.out.println("Choose from the options that follow.");	
 		Scanner sc = new Scanner(System.in);
 			String choice = sc.nextLine();
 			switch(choice) {
 				case "1": //new savings or checking account 
-						System.out.println("Hello" + this.u.getUserName() + ".");
+						System.out.println("Hello, " + this.u.getUserName() + ".");
+						System.out.println("Your user_id is " + u.getUserId());
 						System.out.println("Enter 1 to begin a new SAVINGS account.");
 						System.out.println("Enter 2 to begin a new CHECKING account.");
-						Account a = new Account(this.u);
+						Account a = new Account(this.u); //constructor implies user_id foreign key
+						CustDAO c1 = new CustDAOImpl();
 						int which = sc.nextInt();
 							if(which == 1) { 
-								a.setAcctType("savings");	
+								a.setAcctType("savings"); //should not even have to type convert now that it's varchar in db	
 								} 
 							if(which == 2) {
 								a.setAcctType("checking");
@@ -225,84 +220,80 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 							System.out.println("How much will you deposit for your starting balance?");
 							double x = sc.nextDouble();
 								a.setBalance(x);
-							c.mkAccount(a);
+							c1.mkAccount(a, this.u);
+						System.out.println("Returning to " + this.currentMenu);
+							displayCust(this.u);
 						break;
 					
 					//view accounts and balances
 					case "2": 
+						System.out.println("Hello, " + this.u.getUserName() + ".");
 						System.out.println("Here is the current data for all your accounts:");
-					
-						c.viewAccounts(uu);
+						CustDAO c2 = new CustDAOImpl();
+						c2.viewAccounts(u);
+						
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;					
 					
 					//view transactions
 					case "3": 
+						System.out.println("Hello, " + this.u.getUserName() + ".");
 						System.out.println("Here are your transactions:");
-//						UserDAO uDAO2 = new UserDAOImpl();
-						c.viewTransactions(uu);
+						
+						CustDAO c3 = new CustDAOImpl();
+						c3.viewTransactions(u);
+						
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;
 					
 					
 					//make a deposit
 					case "4": 
-						System.out.println("Here is a list of your current accounts:");
-						c.viewAccounts(uu);
-						System.out.println("Enter the account number to which you'll deposit:");
-						Account aa = new Account(this.u);
-						aa.setUserForKey(sc.nextInt());
-						System.out.println("Enter the amount to DEPOSIT:");
-						double y = sc.nextDouble();
-						c.mkDeposit(aa, y);// make a deposit
+						System.out.println("Hello, " + this.u.getUserName() + ".");
+//						System.out.println("Here is a list of your current accounts:");
+						CustDAO c4 = new CustDAOImpl();
+						c4.mkDeposit(u);						
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;
 					
 						
 					//withdraw 
 					case "5": 
 						System.out.println("Here is a list of your current accounts:");
-						c.viewAccounts(uu);
-						System.out.println("Enter the account number from which you'll withdraw:");
-						Account aaa = new Account(uu);
-						aaa.setUserForKey(sc.nextInt());
-						System.out.println("Enter the amount to WITHDRAW:");
-						double z = sc.nextDouble();
-						c.mkWithdraw(aaa, z); // make a withdrawal
+						CustDAO c5 = new CustDAOImpl();
+						c5.mkWithdraw(this.u);
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;
 					
 					//make a transfer
 					case "6": 
 						System.out.println("Here is a list of your current accounts:");
-						c.viewAccounts(uu);
-						System.out.println("Enter the account number you will DEBIT:");
-						int debit = sc.nextInt();
-						System.out.println("Enter the account number you will CREDIT:");
-						int credit = sc.nextInt();
-						System.out.println("Enter the amount you wish to transfer:");
-						double amt = sc.nextDouble();
-						c.mkTransfer(debit, credit, amt); 
+						CustDAO c6 = new CustDAOImpl();
+						c6.mkTransfer(u);
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;
 					
 					//make transfer to other user
 					case "7": 
 						System.out.println("Here is a list of your current accounts:");
-						c.viewAccounts(uu);
-						System.out.println("Enter the account number of yours to DEBIT:");
-						int tdebit = sc.nextInt();
-						System.out.println("Enter the username of the account to CREDIT:");
-						String trUser = sc.nextLine();
-						System.out.println("Enter the amount you wish to transfer:");
-						double amt2 = sc.nextDouble();
-//						try { 
-						c.mkTransferOut(tdebit, trUser, amt2);
+						CustDAO c7 = new CustDAOImpl();
+						c7.mkTransferOut(this.u);
+						System.out.println("Returning to " + this.currentMenu);
+						displayCust(this.u);
 						break;
 					
 					case "0": //exit and start over
 						displayStart();
 						break;
 					default: saySorry();
-//					String choice = sc.nextLine(); //unnecessary here
-					}
-					uu = this.u;
-					return this.displayCust(this.u); //want to see if this satisfies return requirement
+					this.displayCust(this.u);
+			}
+					return this.displayCust(this.u);
 	}
 	
 	
@@ -312,6 +303,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 	
 
 	public User displayEmpMenu(User u) {
+		super.displaySpace();
 		EmpDAO e = new EmpDAOImpl();
 		this.currentMenu = "employee main menu.";
 		this.sayHeader();

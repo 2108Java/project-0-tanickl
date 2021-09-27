@@ -9,6 +9,13 @@ public abstract class AbstractDisplays {
 	//NO FIELDS
 		
 		// METHODS FOR EXTENSION IN CHILD OVERRIDES OF INT METHODS
+		public void displaySpace() {
+			System.out.println(" ");
+			System.out.println(" ");
+			System.out.println(" ");
+		}
+	
+	
 		public void displayStart() {
 			System.out.println("(1) Login existing Customer or Employee.");
 			System.out.println("(2) Setup a New Customer or Employee User.");
