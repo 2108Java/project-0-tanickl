@@ -34,22 +34,22 @@ public class RegisterUserImpl implements RegisterUser {
 
 	@Override
 	public boolean checkUsername(String a) {
-		return false;
+		return uDAO.selectUniqueUserName(a); //true if unique
 	}
 	
 
 
 
-	@Override
-	public void registerNewUser(String username, String pass, boolean isEmp) {
-		uDAO.insertNewUser(username, pass, isEmp);
-		
-	}
+//	@Override
+//	public void registerNewUser(String username, String pass, boolean isEmp) {
+//		uDAO.insertNewUser(username, pass, isEmp);
+//		
+//	}
 
 	@Override
 	public void registerNewUser(User u) {
 		
-		uDAO.insertNewUser(u.getUserName(),u.getUserPass(),u.getIsEmp());
+		uDAO.insertNewUser(u);
 	}
 
 

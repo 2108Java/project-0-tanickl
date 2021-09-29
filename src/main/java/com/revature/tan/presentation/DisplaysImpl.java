@@ -149,7 +149,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				System.out.println("Enter your username now:");
 				Scanner sc = new Scanner(System.in);
 				username = sc.nextLine();
-				if(x.checkUsername(username)) {
+				if(!x.checkUsername(username)) {
 					System.out.println("Sorry, but that username is taken.");
 					System.out.println("Please try again.");
 				} else { registering = false; } 
@@ -167,17 +167,17 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						System.out.println("Sorry, but those passwords don't match.");
 						System.out.println("Please try again.");
 					} else {
-						System.out.println("Are you registering as an employee? Type 1 for yes or 0 for no.");
+						System.out.println("Are you registering as an employee? Type 1 for yes or 2 for no.");
 						if(sc.nextInt() == 1) { this.u.setIsEmp(true);
-						} else if (sc.nextInt() == 0) { this.u.setIsEmp(false);}
-//						boolean isEmp = (yesno == 1);
+						} else { this.u.setIsEmp(false); }
+//						sc.nextInt();
 						this.u.setUserName(username);
 						this.u.setUserPass(pass2);
-						
 //						x.registerNewUser(username, pass, isEmp);
 						x.registerNewUser(this.u);
 						matching = false; } 
-				} while(matching);
+				} while(matching); 
+				displayLogin();
 	}
 					
 	
@@ -280,7 +280,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					
 					//make transfer to other user
 					case "7": 
-						System.out.println("Here is a list of your current accounts:");
+						System.out.println("Ok, let's make an outside transfer.");
 						CustDAO c7 = new CustDAOImpl();
 						c7.mkTransferOut(this.u);
 						System.out.println("Returning to " + this.currentMenu);
@@ -316,35 +316,59 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 			switch(choice) {
 			
 			
-			case "1":			//view all customer accts 
-				e.viewAll();
+			case "1":	
+				System.out.println("Hello, " + this.u.getUserName() + ".");
+				System.out.println("Here is the current data for ALL CUSTOMER accounts:");
+				EmpDAO e1 = new EmpDAOImpl();
+				e1.viewAll();
+				System.out.println("Returning to " + this.currentMenu);
 				break;
-			case "2":			//search accts by username
+			
+			case "2":
+				System.out.println("Hello, " + this.u.getUserName() + ".");
+				System.out.println("Here is the bank's current customer list: ");
+				EmpDAO ee = new EmpDAOImpl();
+				ee.viewCustRoll();
+				System.out.println("Returning to " + this.currentMenu);
+				break;
+				
+			case "3":			//search accts by username
 				System.out.println("Enter the username you want to search:");
 				String cust = sc.nextLine();
-				e.viewByName(cust);//search accounts by customer name
+				EmpDAO e2 = new EmpDAOImpl();
+				e2.viewByName(cust);//search accounts by customer name
 				break;
-			case "3":			//approve a pending account
+			
+			
+			case "4":			//approve a pending account
 				System.out.println("Here are all the pending accounts:");
-				e.selectPending();
-				System.out.println("Enter the username of the pending account you want to approve.");
-				e.approvePending();
+				EmpDAO e3 = new EmpDAOImpl();
+				e3.selectPending();
+				System.out.println("Enter the account number of the pending account you want to approve.");
+				int cust3 = sc.nextInt();
+				e3.approvePending(cust3);
 				break;
-			case "4": 
+			
+			case "5": 		//reject a pending
 				System.out.println("Here are all the pending accounts:");
-				e.selectPending();
-				System.out.println("Enter the username of the pending account you want to reject.");
-				e.rejectPending();//approve pending accounts
+				EmpDAO e4 = new EmpDAOImpl();
+				e4.selectPending();
+				System.out.println("Enter the account number of the pending account you want to reject.");
+				int cust4 = sc.nextInt();
+				e4.rejectPending(cust4);//approve pending accounts
 				break;
-			case "5": 			//view the transaction log
+			
+			case "6": 			//view the transaction log
 				System.out.println("Here is the transaction log:");
-				e.viewLog(); 
+				EmpDAO e5 = new EmpDAOImpl();
+				e5.viewLog();
 				break;
+			
 			case "0":
 				displayStart();
 				break;
 			default: saySorry();
-			} sc.close();
+			}
 			this.displayEmpMenu(u);
 			return this.u;
 	} 

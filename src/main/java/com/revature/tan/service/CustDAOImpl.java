@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+
 import com.revature.tan.*;
 import com.revature.tan.models.*;
 import com.revature.tan.presentation.AbstractDisplays;
@@ -23,7 +26,8 @@ import com.revature.tan.service.ConnectionMaker;
 
 public class CustDAOImpl implements CustDAO {
 
-
+	private static final org.apache.logging.log4j.Logger BANKLOG = LogManager.getLogger();
+	
 	//FIELDS
 //	private Connection connection = ConnectionMaker.getConnection();
 	private Account a;
@@ -81,6 +85,7 @@ public class CustDAOImpl implements CustDAO {
 						    b.setUserForKey(rs.getInt("user_id"));
 						    b.setAcctType(rs.getString("type_of")); //try "acct_type" next   
 						   System.out.println("Here are the details for your new account: ");
+						   BANKLOG.info("A new account was created: " + u.toString());
 						   System.out.println(b.toString());
 					}
 
@@ -187,7 +192,7 @@ public class CustDAOImpl implements CustDAO {
 					acct.setAcctType(rs.getString("type_of"));
 //				    ArrayList<Account> acctListFromDAO = new ArrayList<Account>();
 //					acctListFromDAO.add(acct);
-				    System.out.println(acct.toString());
+					System.out.println(acct.toString());
 
 			} 
 //			u.setUserAcctList(acctListFromDAO);	
@@ -216,6 +221,8 @@ public class CustDAOImpl implements CustDAO {
 			ps2.setInt(2, creditAcct);
 			boolean success = ps2.execute();
 			if(success) {
+				BANKLOG.info("A DEPOSIT of " + y +"was made to account number" + creditAcct);
+
 				System.out.println("Your DEPOSIT was successful.");
 			} else {
 				System.out.println("Sorry but that DEPOSIT was not successful.");
@@ -278,6 +285,7 @@ public class CustDAOImpl implements CustDAO {
 			ps2.setInt(2, debitAcct);
 			boolean success = ps2.execute();
 			if(success) {
+				BANKLOG.info("A WITHDRAWAL of " + y + "was made from account number " + debitAcct);
 				System.out.println("Your WITHDRAWAL was successful.");
 			} else {
 				System.out.println("Sorry but that WITHDRAWAL was not successful.");
@@ -352,6 +360,8 @@ public class CustDAOImpl implements CustDAO {
 		ps2.setDouble(3, y);
 		ps2.setInt(4, creditAcct);
 		ps2.execute();
+		BANKLOG.info("A TRANSFER of " + y + "was CREDITED to account number " + creditAcct + 
+				"and DEBITED from " + debitAcct);
 		System.out.println("Your TRANSFER was successful.");
 		} catch	(SQLException e) {
 			e.printStackTrace();
@@ -420,6 +430,8 @@ public class CustDAOImpl implements CustDAO {
 		ps2.setDouble(3, y);
 		ps2.setInt(4, creditAcct);
 		ps2.execute();
+		BANKLOG.info("A TRANSFER of " + y + "was CREDITED to account number " + creditAcct + 
+				"and DEBITED from " + debitAcct);
 		System.out.println("Your TRANSFER was successful.");
 		} catch	(SQLException e) {
 			e.printStackTrace();

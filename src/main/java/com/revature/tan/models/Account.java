@@ -4,6 +4,7 @@ public class Account {
 
 	//FIELDS
 	
+//	private String username;
 	private int pkAcct;
 	private boolean isApproved;
 	private double balance;
@@ -102,6 +103,16 @@ public class Account {
 	public String toString() {
 		return "Account [account number: " + pkAcct + ", is Approved = " + isApproved + ", balance = " + balance + ", acctType = "
 				+ acctType + ", owner's user id = " + userForKey + "]";
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
 	}	
 		
 

@@ -9,10 +9,12 @@ public interface UserDAO {
 
 	public boolean selectUniqueUserName(String a);
 
-	public User insertNewUser(String username, String pass, boolean isEmp);
+//	public User insertNewUser(String username, String pass, boolean isEmp);
 
 	public User selectUserById(Account a);
 
 	public User getUser(String username);
 	public User getUser(User u);
+
+	public User insertNewUser(User u);
 }

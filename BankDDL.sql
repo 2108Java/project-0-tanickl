@@ -2,16 +2,29 @@
 --bsim_users, bsim_accounts,  maybe bsim_log, maybe bsim_acct_owners 
 
 
+
+--for demo
+select * from bsim_users;
+select * from bsim_accounts;
+
+
+
 select * bsim_accounts where is_approved = false;
 
-create table bsim2_users (
-	user_id serial primary key, 
-	username varchar(20) unique not null,
-	pword varchar(20) not null,
-	is_emp boolean default false not null
-	)
+--create table bsim2_users (
+--	user_id serial primary key, 
+--	username varchar(20) unique not null,
+--	pword varchar(20) not null,
+--	is_emp boolean default false not null
+--	)
 
-
+--yes
+alter table bsim_users alter column is_emp drop default;
+	
+--To reset the data
+delete from bsim_accounts where user_id >= 20;
+delete from bsim_users where user_id >= 20;
+select * from bsim_users;
 select * from bsim_accounts;
 
 drop table bsim_users; 
@@ -54,6 +67,13 @@ select * from bsim_users;
 			--begin test cases 
 --END SETUP FOR USERS
 
+select * from bsim_users;
+select username, bsim_accounts from bsim_accounts inner join bsim_users
+	on bsim_accounts.user_id = bsim_users.user_id where bsim_users.username = ?;
+
+select * from bsim_accounts inner join bsim_users on bsim_accounts.user_id = bsim_users.user_id where bsim_users.username = ;
+select * from bsim_accounts;
+select * from bsim_accounts;
 
 --passed test for unique constraint
 insert into bsim_users (username, pword, is_emp) values ('emp1', 'pass1', true);

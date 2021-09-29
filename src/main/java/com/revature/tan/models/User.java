@@ -24,7 +24,7 @@ public class User {
 	public User() {
 		this.userName = "undefined";
 		this.userPass = "undefined";
-		this.isEmp = false;
+//		this.isEmp = false; // this was messing it ALL up
 	}
 	
 	

@@ -25,10 +25,11 @@ public abstract class AbstractDisplays {
 		
 		public void menuEmp() {
 			System.out.println("(1) View all accounts.");
-			System.out.println("(2) Search accounts by customer name.");
-			System.out.println("(3) Approve a pending account.");
-			System.out.println("(4) Reject a pending account.");
-			System.out.println("(5) View the transaction log.");
+			System.out.println("(2) View customer roll as list of usernames.");
+			System.out.println("(3) Search accounts by customer name.");
+			System.out.println("(4) Approve a pending account.");
+			System.out.println("(5) Reject a pending account.");
+			System.out.println("(6) View the transaction log.");
 			System.out.println("(0) Exit session and start over.");
 		}
 		
