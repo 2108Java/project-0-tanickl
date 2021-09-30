@@ -2,32 +2,26 @@ package com.revature.tan.service;
 
 
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.Scanner;
-
 import org.apache.logging.log4j.LogManager;
-
-import com.revature.tan.*;
 import com.revature.tan.models.Account;
 import com.revature.tan.models.User;
 import com.revature.tan.presentation.Displays;
 import com.revature.tan.presentation.DisplaysImpl;
 import com.revature.tan.repo.EmpDAO;
-import com.revature.tan.repo.UserDAO;
-import com.revature.tan.service.*;
+import com.revature.tan.repo.TransactionDAO;
+
+
 
 public class EmpDAOImpl implements EmpDAO {
 
 	//FIELDS
-	private Connection connection = ConnectionMaker.getConnection(); // try it, but might..
+//	private Connection connection = ConnectionMaker.getConnection(); // try it, but might..
 	private Account a;
 	private Account b;
 	private User u;
@@ -65,25 +59,29 @@ public class EmpDAOImpl implements EmpDAO {
 			ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 				while(rs.next()) {
-//					b.setUsername(rs.getString("username"));
 					b.setPkAcct(rs.getInt("acct_num"));
 					b.setApproved(rs.getBoolean("is_approved"));
 				    b.setBalance(rs.getDouble("balance"));
 				    b.setUserForKey(rs.getInt("user_id"));
 				    b.setAcctType(rs.getString("type_of"));
+				   System.out.println(" ");
+				   System.out.println(" ---------------- ");
 				   System.out.println("Account details: ");
 				   System.out.println(b.toString());
+				   System.out.println(" ---------------- ");
 				   System.out.println(" ");
-				   System.out.println(" ");
-				}
+				   }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	
+	
+	
+	@Override
 	public void viewCustRoll() {
 		
-			
 			final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
 			final String USERNAME= "postgres";
 			final String PASSWORD = "49STOREdata40$16";
@@ -97,9 +95,11 @@ public class EmpDAOImpl implements EmpDAO {
 					while(rs.next()) {
 						User u = new User();
 						u.setUserName(rs.getString("username"));
-					   System.out.println(u.getUserName());
-					   System.out.println(" ");
-					   System.out.println(" ");
+						System.out.println(" ");
+						System.out.println(" ---------------- ");
+						System.out.println(u.getUserName());
+						System.out.println(" ---------------- ");
+						System.out.println(" ");
 					}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -128,11 +128,16 @@ public class EmpDAOImpl implements EmpDAO {
 			while(rs.next()) {
 					Account acct = new Account();
 //					acct.setUsername(rs.getString("username"));
+					System.out.println(" ");
+					System.out.println(" ------------- ");
 					acct.setPkAcct(rs.getInt("acct_num"));
 					acct.setApproved(rs.getBoolean("is_approved"));
 					acct.setBalance(rs.getDouble("balance"));
 					acct.setUserForKey(rs.getInt("user_id"));
 					acct.setAcctType(rs.getString("type_of"));
+					System.out.println(" ------------- ");
+					System.out.println(" ");
+					
 	////			    ArrayList<Account> acctListFromDAO = new ArrayList<Account>();
 					acctListFromDAO.add(acct);
 				    System.out.println(acct.toString());
@@ -171,9 +176,11 @@ public class EmpDAOImpl implements EmpDAO {
 						acct.setUserForKey(rs.getInt("user_id"));
 						acct.setAcctType(rs.getString("type_of"));
 						acctListFromDAO.add(acct);
-					    System.out.println(acct.toString());
+						System.out.println(" ---------------- ");
+						System.out.println(acct.toString());
 					    System.out.println(" ");
 					    System.out.println(" ");
+					    System.out.println(" ---------------- ");
 //					System.out.println("Here is your result: " + rs.toString());
 					}
 			} catch (SQLException e) {
@@ -197,7 +204,7 @@ public class EmpDAOImpl implements EmpDAO {
 				Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				ps = connection.prepareStatement(sql);
 				ps.setInt(1, cust3);
-				ps.execute();
+//				ps.execute();
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()) {
 					Account acct = new Account();
@@ -207,11 +214,15 @@ public class EmpDAOImpl implements EmpDAO {
 					acct.setUserForKey(rs.getInt("user_id"));
 					acct.setAcctType(rs.getString("type_of"));
 					acctListFromDAO.add(acct);
-				    System.out.println("Account APPROVAL is confirmed. You have APPROVED this account: ");
+					System.out.println(" ---------------- ");
+					System.out.println("Account APPROVAL is confirmed. You have APPROVED this account: ");
 					System.out.println(acct.toString());
 					System.out.println(" ");
 					System.out.println(" ");
-					BANKLOG.info("Account number " + acct.getPkAcct() + "was APPROVED");
+					System.out.println(" ---------------- ");
+					String desc = "Account number " + cust3 + " was APPROVED.";
+					TransactionDAO.changePending(cust3, desc);
+					BANKLOG.info(desc);
 				}
 			connection.close();
 			} catch (SQLException e) {
@@ -223,20 +234,49 @@ public class EmpDAOImpl implements EmpDAO {
 	
 	
 	@Override
-	public void viewLog() { //SELECT // OR SHOULD I JUST USE LOG4J
-//			System.out.print(BANKLOG);
-		
-			try  {
-				File file=new File("D:/Documents/BANKLOG.log");
-				Scanner sc = new Scanner(file);     //file to be scanned  
-				while (sc.hasNextLine())        //returns true if and only if scanner has another token  
-				System.out.println(sc.nextLine());    
-				}  
-				catch(Exception e)  
-				{  
-				e.printStackTrace();  
-			}  
-	}	
+	public void viewLog() { 
+			
+			
+			final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+			final String USERNAME= "postgres";
+			final String PASSWORD = "49STOREdata40$16";
+			
+			String sql = "select * from bsim_log";
+			PreparedStatement ps;
+			try {
+				Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				ps = connection.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery(); 
+				while(rs.next()) {
+					System.out.println(" ---------------- ");
+					System.out.println("Transaction number " + rs.getInt("trans_num"));
+					System.out.println("Involved Accounts: " + rs.getInt("deb_acct") + " and " + rs.getInt("cred_acct"));
+					System.out.println("Amount: " + rs.getDouble("amount"));
+					System.out.println("Description: " + rs.getString("description"));
+					System.out.println("Timestamp: " + rs.getDate("datetime")); //try toString next, or getStream
+					System.out.println(" ---------------- ");
+					System.out.println(" ");
+					System.out.println(" ");
+					System.out.println(" ");
+				} connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 
+//			Displays next = new DisplaysImpl();
+//				next.displayEmpMenu(u);
+//			
+		//first idea was to use logger for transaction log
+//			try  {
+//				File file=new File("D:/Documents/BANKLOG.log");
+//				Scanner sc = new Scanner(file);     //file to be scanned  
+//				while (sc.hasNextLine())        //returns true if and only if scanner has another token  
+//				System.out.println(sc.nextLine());    
+//				}  
+//				catch(Exception e)  
+//				{  
+//				e.printStackTrace();  
+//			}  
+}	
 	
 
 	
@@ -267,17 +307,20 @@ public class EmpDAOImpl implements EmpDAO {
 					acct.setUserForKey(rs.getInt("user_id"));
 					acct.setAcctType(rs.getString("type_of"));
 					acctListFromDAO.add(acct);
-				    System.out.println("Account REJECTION is confirmed. You have DELETED this account: ");
+					System.out.println(" ---------------- ");
+					System.out.println("Account REJECTION is confirmed. You have DELETED this account: ");
 					System.out.println(acct.toString());
 					System.out.println(" ");
 					System.out.println(" ");
-					BANKLOG.info("Account number " + acct.getPkAcct() + "was REJECTED.");
+					System.out.println(" ---------------- ");
+					String desc = "Account number " + cust4 + " was REJECTED.";
+					TransactionDAO.changePending(cust4, desc);
+					BANKLOG.info(desc);
 					} 
 			connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 	}
-
 
 }

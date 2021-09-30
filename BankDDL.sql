@@ -1,6 +1,161 @@
 --Creating tables
 --bsim_users, bsim_accounts,  maybe bsim_log, maybe bsim_acct_owners 
 
+select * from bsim_log
+
+
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+--customer's view of transactions
+	--ideas: using a union, a join, a subquery
+
+select * from bsim_log where deb_acct in (select acct_num from bsim_accounts where user_id=19) 
+union
+select * from bsim_log where cred_acct in (select acct_num from bsim_accounts where user_id=19);
+
+select * from bsim_log;
+select * from bsim_users;
+
+--yes
+select trans_num, deb_acct, cred_acct, amount, description, datetime 
+from bsim_log inner join bsim_accounts 
+on bsim_log.deb_acct = bsim_accounts.acct_num where user_id=40
+union
+select trans_num, deb_acct, cred_acct, amount, description, datetime 
+from bsim_log inner join bsim_accounts 
+on bsim_log.cred_acct = bsim_accounts.acct_num where user_id=40;
+
+
+
+select acct_num from bsim_accounts where user_id = ? returning 
+
+select * from bsim_log where deb_acct ((select acct_num from bsim_accounts where user_id = 5) 
+union all
+select * from bsim_log where cred_acct = (select acct_num from bsim_accounts where user_id = 5));
+
+select acct_num from bsim_accounts where user_id = 5;
+
+
+in (
+	select acct_num from bsim_accounts where user_id = 
+) union all (select cred_acct in (select acct_num from bsim_accounts where user_id = )
+));
+
+select * from bsim_log;
+
+select * from bsim_log --
+bsim_accounts.user_id = 
+
+
+----test data for query of bsim_log
+
+select * from bsim_log;
+
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (1,8,10,'1 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (3,11,21,'2 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (8,5,32,'3 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (11,44,43,'4 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (5,17,54,'5 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (44,18,65,'6 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (17,19,76,'7 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (18,20,87,'8 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (19,22,98,'9 this is a test', now());
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime) values (25,20,82,'10 this is a test', now());
+insert into bsim_log (deb_acct, amount, description, datetime) values (26,82,'11 this is a test', now());
+insert into bsim_log (cred_acct, amount, description, datetime) values (27,101,'12 this is a test', now());
+insert into bsim_log (deb_acct, amount, description, datetime) values (28,82,'13 this is a test', now());
+insert into bsim_log (cred_acct, amount, description, datetime) values (28,82,'14 this is a test', now());
+insert into bsim_log (deb_acct, description, datetime) values (30, '15, this is test of account approved', now());
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+
+
+select * from bsim_accounts;
+---
+SELECT
+	c.customer_id,
+	c.first_name customer_first_name,
+	c.last_name customer_last_name,
+	s.first_name staff_first_name,
+	s.last_name staff_last_name,
+	amount,
+	payment_date
+FROM
+	customer c
+INNER JOIN payment p 
+    ON p.customer_id = c.customer_id
+INNER JOIN staff s 
+    ON p.staff_id = s.staff_id
+ORDER BY payment_date;
+
+---
+--join as nested query
+SELECT
+	film_id,
+	title
+FROM
+	film
+WHERE
+	film_id IN (
+		SELECT
+			inventory.film_id
+		FROM
+			rental
+		INNER JOIN inventory ON inventory.inventory_id = rental.inventory_id
+		WHERE
+			return_date BETWEEN '2005-05-29'
+		AND '2005-05-30'
+	);
+
+
+--bsim_log table
+
+create table bsim_log (
+	trans_num serial primary key,
+	deb_acct int,
+	cred_acct int,
+	amount numeric check (amount >= 0),
+	description varchar not null,
+	datetime timestamp
+);
+
+select * from bsim_log;
+--
+--TESTS
+--yes, WITHDRAW
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime)
+	values (998,null,142.36,'this is a SECOND test of WITHDRAWAL', now());
+--yes, DEPOSIT
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime)
+	values (null,996,514.12,'this is a test of DEPOSIT', now());
+--yes, transfer
+insert into bsim_log (deb_acct, cred_acct, amount, description, datetime)
+	values (993,992,213.00,'this is a SECOND test of TRANSFER', now());
+--yes, pending
+insert into bsim_log (deb_acct, description, datetime)
+	values (990,'this is a SECOND test of REJECT or APPROVE PENDING', now());
+
+
+
+
+
+
+select * from bsim_log;
+
+
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+
 
 
 --for demo
@@ -11,12 +166,7 @@ select * from bsim_accounts;
 
 select * bsim_accounts where is_approved = false;
 
---create table bsim2_users (
---	user_id serial primary key, 
---	username varchar(20) unique not null,
---	pword varchar(20) not null,
---	is_emp boolean default false not null
---	)
+
 
 --yes
 alter table bsim_users alter column is_emp drop default;

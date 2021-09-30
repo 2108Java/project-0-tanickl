@@ -21,9 +21,9 @@ public class MainDriver {
 	
 	public static void main(String[] args) {
 	
-//		bankLog.info("starting the application");
-//		final org.apache.logging.log4j.Logger BANKLOG = LogManager.getLogger();
-//			then throughout, MainDriver.bankLog.info("custom message");
+
+		final org.apache.logging.log4j.Logger BANKLOG = LogManager.getLogger();
+
 		
 		
 	Displays go = new DisplaysImpl();

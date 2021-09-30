@@ -212,7 +212,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 						CustDAO c1 = new CustDAOImpl();
 						int which = sc.nextInt();
 							if(which == 1) { 
-								a.setAcctType("savings"); //should not even have to type convert now that it's varchar in db	
+								a.setAcctType("savings"); 
 								} 
 							if(which == 2) {
 								a.setAcctType("checking");
@@ -252,7 +252,6 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 					//make a deposit
 					case "4": 
 						System.out.println("Hello, " + this.u.getUserName() + ".");
-//						System.out.println("Here is a list of your current accounts:");
 						CustDAO c4 = new CustDAOImpl();
 						c4.mkDeposit(u);						
 						System.out.println("Returning to " + this.currentMenu);
@@ -316,7 +315,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 			switch(choice) {
 			
 			
-			case "1":	
+			case "1":			//view all accounts
 				System.out.println("Hello, " + this.u.getUserName() + ".");
 				System.out.println("Here is the current data for ALL CUSTOMER accounts:");
 				EmpDAO e1 = new EmpDAOImpl();
@@ -324,7 +323,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				System.out.println("Returning to " + this.currentMenu);
 				break;
 			
-			case "2":
+			case "2":			//view customer list
 				System.out.println("Hello, " + this.u.getUserName() + ".");
 				System.out.println("Here is the bank's current customer list: ");
 				EmpDAO ee = new EmpDAOImpl();
@@ -349,7 +348,7 @@ public class DisplaysImpl extends AbstractDisplays implements Displays {
 				e3.approvePending(cust3);
 				break;
 			
-			case "5": 		//reject a pending
+			case "5": 			//reject a pending
 				System.out.println("Here are all the pending accounts:");
 				EmpDAO e4 = new EmpDAOImpl();
 				e4.selectPending();

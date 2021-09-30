@@ -20,6 +20,7 @@ import com.revature.tan.presentation.AbstractDisplays;
 import com.revature.tan.presentation.Displays;
 import com.revature.tan.presentation.DisplaysImpl;
 import com.revature.tan.repo.CustDAO;
+import com.revature.tan.repo.TransactionDAO;
 import com.revature.tan.repo.UserDAO;
 import com.revature.tan.service.ConnectionMaker;
 
@@ -33,8 +34,8 @@ public class CustDAOImpl implements CustDAO {
 	private Account a;
 	private Account b;
 	private User u;
-	private ArrayList<Account> acctListFromDAO;
-	private Object[] acctArrayFromDAO;
+//	private ArrayList<Account> acctListFromDAO;
+
 
 	
 	//CONSTRUCTORS
@@ -42,18 +43,9 @@ public class CustDAOImpl implements CustDAO {
 		this.a = new Account();
 		this.b = new Account();
 		this.u = new User();
-		this.acctListFromDAO = new ArrayList<Account>();
-//		this.acctArrayFromDAO = new Object[]();
 	}
 	
-	//I don't think I need this constructor
-//	public CustDAOImpl(Account a, Account b, User u, ArrayList<Account> acctListFromDAO) {
-//		super();
-//		this.a = a;
-//		this.b = b;
-//		this.u = u;
-//		this.acctListFromDAO = acctListFromDAO;
-//	}
+
 	
 	
 	
@@ -132,10 +124,11 @@ public class CustDAOImpl implements CustDAO {
 					acct.setUserForKey(rs.getInt("user_id"));
 					acct.setAcctType(rs.getString("type_of"));
 //				    ArrayList<Account> acctListFromDAO = new ArrayList<Account>();
-					acctListFromDAO.add(acct);
+//					acctListFromDAO.add(acct);
 				    System.out.println(acct.toString());
 
-			} u.setUserAcctList(acctListFromDAO);	
+			} 
+//			u.setUserAcctList(acctListFromDAO);	
 //			System.out.println("Here is a summary of your accounts, " + u.getUserName() + ":");
 //			Object[] acctArrayFromDAO = acctListFromDAO.toArray();
 //			System.out.println(acctArrayFromDAO.toString()); unnecessary for now
@@ -155,11 +148,44 @@ public class CustDAOImpl implements CustDAO {
 
 
 
-	public User viewTransactions(User u) { 
-		System.out.println("Here are your transactions:");
-		Displays next = new DisplaysImpl(u);
-		//SELECT from table transactions WHERE ...
-	}
+	public void viewTransactions(User u) { 
+		this.u = u;
+		
+		final String URL = "jdbc:postgresql://database-1.cuxfgs7svfhd.us-east-2.rds.amazonaws.com:5432/";
+		final String USERNAME= "postgres";
+		final String PASSWORD = "49STOREdata40$16";
+		
+		String sql = "select * from \r\n"
+				+ "bsim_log inner join bsim_accounts \r\n"
+				+ "on bsim_log.deb_acct = bsim_accounts.acct_num where user_id=? \r\n"
+				+ "union \r\n"
+				+ "select * from \r\n"
+				+ "bsim_log inner join bsim_accounts \r\n"
+				+ "on bsim_log.cred_acct = bsim_accounts.acct_num where user_id=? ";
+		PreparedStatement ps;
+		try {
+			Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			ps = connection.prepareStatement(sql);
+			ps.setInt(1, u.getUserId());
+			ps.setInt(2, u.getUserId());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				System.out.println(" ---------------- ");
+				System.out.println("Transaction number: " + rs.getInt("trans_num"));
+				System.out.println("Involved Accounts: " + rs.getInt("deb_acct") + " and " + rs.getInt("cred_acct"));
+				System.out.println("Amount: " + rs.getDouble("amount"));
+				System.out.println("Description: " + rs.getString("description"));
+				System.out.println("Timestamp: " + rs.getDate("datetime")); //try toString next, or getStream
+				System.out.println(" ---------------- ");
+				System.out.println(" ");
+				System.out.println(" ");
+			} connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+}
+
+
 
 
 	
@@ -179,7 +205,7 @@ public class CustDAOImpl implements CustDAO {
 			ps = connection.prepareStatement(sql);
 			ps.setInt(1, u.getUserId());
 			ResultSet rs = ps.executeQuery();	
-			ArrayList<Account> acctListFromDAO = new ArrayList<Account>();
+//			ArrayList<Account> acctListFromDAO = new ArrayList<Account>();
 			System.out.println("Here is a summary of your accounts. Choose the account number to "
 					+ "which you will deposit.");
 			
@@ -194,12 +220,7 @@ public class CustDAOImpl implements CustDAO {
 //					acctListFromDAO.add(acct);
 					System.out.println(acct.toString());
 
-			} 
-//			u.setUserAcctList(acctListFromDAO);	
-//			System.out.println("Here is a summary of your accounts, " + u.getUserName() + ":");
-//			Object[] acctArrayFromDAO = acctListFromDAO.toArray();
-//			System.out.println(acctArrayFromDAO.toString()); unnecessary for now
-			rs.close();
+			} rs.close();
 			ps.close();
 			connection.close();
 		} catch (SQLException e) {
@@ -221,8 +242,9 @@ public class CustDAOImpl implements CustDAO {
 			ps2.setInt(2, creditAcct);
 			boolean success = ps2.execute();
 			if(success) {
-				BANKLOG.info("A DEPOSIT of " + y +"was made to account number" + creditAcct);
-
+				String depDesc = "A DEPOSIT of " + y + " was made to account number " + creditAcct;
+				TransactionDAO.insertDeposit(creditAcct, y, depDesc);
+				BANKLOG.info(depDesc);
 				System.out.println("Your DEPOSIT was successful.");
 			} else {
 				System.out.println("Sorry but that DEPOSIT was not successful.");
@@ -235,6 +257,9 @@ public class CustDAOImpl implements CustDAO {
 	}
 
 
+	
+	
+	
 	public User mkWithdraw(User u) {
 		this.u = u;
 		
@@ -285,10 +310,15 @@ public class CustDAOImpl implements CustDAO {
 			ps2.setInt(2, debitAcct);
 			boolean success = ps2.execute();
 			if(success) {
-				BANKLOG.info("A WITHDRAWAL of " + y + "was made from account number " + debitAcct);
+				
+				String desc = "A WITHDRAWAL of " + y + " was made from account number " + debitAcct;
+				TransactionDAO.insertWithdraw(debitAcct, y, desc);
+				BANKLOG.info(desc);
 				System.out.println("Your WITHDRAWAL was successful.");
+				System.out.println(" ---------------- ");
 			} else {
 				System.out.println("Sorry but that WITHDRAWAL was not successful.");
+				System.out.println(" ---------------- ");
 			}
 			ps2.close();
 			connection.close();
@@ -326,7 +356,6 @@ public class CustDAOImpl implements CustDAO {
 					acct.setBalance(rs.getDouble("balance"));
 					acct.setUserForKey(rs.getInt("user_id"));
 					acct.setAcctType(rs.getString("type_of"));
-
 				    System.out.println(acct.toString());
 			} 
 			rs.close();
@@ -360,9 +389,13 @@ public class CustDAOImpl implements CustDAO {
 		ps2.setDouble(3, y);
 		ps2.setInt(4, creditAcct);
 		ps2.execute();
-		BANKLOG.info("A TRANSFER of " + y + "was CREDITED to account number " + creditAcct + 
-				"and DEBITED from " + debitAcct);
+		String transferDesc = "A TRANSFER of " + y + " was CREDITED to account number " 
+				+ creditAcct + " and DEBITED from " + debitAcct;
+		TransactionDAO.insertTransfer(debitAcct, creditAcct, y, transferDesc);
+		BANKLOG.info(transferDesc);
 		System.out.println("Your TRANSFER was successful.");
+		System.out.println(" ---------------- ");
+		
 		} catch	(SQLException e) {
 			e.printStackTrace();
 		}
@@ -406,10 +439,10 @@ public class CustDAOImpl implements CustDAO {
 		}
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter the account number which you'll DEBIT for this TRANSFER:");
+		System.out.println("Which of YOUR accounts will you DEBIT for this transfer:");
 		int debitAcct = sc.nextInt();
 			//might need to add check that DEBIT account BELONGS to USER!
-		System.out.println("Enter the account number which you'll CREDIT for this TRANSFER:");
+		System.out.println("Enter the account number of ANOTHER CUSTOMER which you'll CREDIT for this TRANSFER:");
 		int creditAcct = sc.nextInt();
 		System.out.println("Enter the amount to TRANSFER from account number " + debitAcct + "to "
 				+ "account number " + creditAcct);
@@ -430,9 +463,12 @@ public class CustDAOImpl implements CustDAO {
 		ps2.setDouble(3, y);
 		ps2.setInt(4, creditAcct);
 		ps2.execute();
-		BANKLOG.info("A TRANSFER of " + y + "was CREDITED to account number " + creditAcct + 
-				"and DEBITED from " + debitAcct);
+		String desc = "A TRANSFER of " + y + " was CREDITED to account number " + creditAcct
+				+ " and DEBITED from " + debitAcct;
+		TransactionDAO.insertTransfer(debitAcct, creditAcct, y, desc);
+		BANKLOG.info(desc);
 		System.out.println("Your TRANSFER was successful.");
+		System.out.println(" ---------------- ");
 		} catch	(SQLException e) {
 			e.printStackTrace();
 		}
